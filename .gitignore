@@ -1,0 +1,6 @@
+/.vs
+.idea/
+bin/
+obj/
+/BlogApp/app.db-wal
+/BlogApp/app.db
