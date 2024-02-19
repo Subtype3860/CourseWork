@@ -6,12 +6,10 @@ namespace BlogPLL.ViewModels.Account
     {
         public User User { get; set; }
 
-        public UserViewModel(User user)
+        public UserViewModel(User user )
         {
             User = user;
         }
-
-        public List<User> Friends { get; set; }
 
     }
 }

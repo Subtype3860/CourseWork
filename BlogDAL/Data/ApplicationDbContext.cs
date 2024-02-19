@@ -1,4 +1,5 @@
-﻿using BlogDAL.Models;
+﻿using BlogDAL.Configs;
+using BlogDAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,10 @@ namespace BlogDAL.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new TagConfig())
+                .ApplyConfiguration(new PostConfig())
+                .ApplyConfiguration(new CommentariesConfig())
+                .ApplyConfiguration(new PostTagConfig());
         }
     }
 }

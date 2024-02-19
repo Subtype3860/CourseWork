@@ -5,54 +5,56 @@ using BlogPLL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogPLL.Controllers.Account
+namespace BlogPLL.Controllers.Account;
+
+public class AccountManagerController : Controller
 {
-    public class AccountManagerController : Controller
+    private readonly IMapper _mapper;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager,
+        IMapper mapper, IUnitOfWork unitOfWork)
     {
-        private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IUnitOfWork _unitOfWork;
-        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager,
-            IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
+    }
 
-        [Route("Login")]
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View("Login");
-        }
-        [HttpGet]
-        public IActionResult Login(string returnUrl)
-        {
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
-        }
-        [Route("Edit")]
-        [HttpGet]
-        public IActionResult Edit()
-        {
-            var user = User;
+    [Route("Login")]
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View("Login");
+    }
 
-            var result = _userManager.GetUserAsync(user);
+    [HttpGet]
+    public IActionResult Login(string returnUrl)
+    {
+        return View(new LoginViewModel { ReturnUrl = returnUrl });
+    }
 
-            var editmodel = _mapper.Map<UserEditViewModel>(result.Result);
+    [Route("Edit")]
+    [HttpGet]
+    public IActionResult Edit()
+    {
+        var user = User;
 
-            return View("Edit", editmodel);
-        }
-        [Route("Logout")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-        
+        var result = _userManager.GetUserAsync(user);
+
+        var editmodel = _mapper.Map<UserEditViewModel>(result.Result);
+
+        return View("Edit", editmodel);
+    }
+
+    [Route("Logout")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }
