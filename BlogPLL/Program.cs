@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using BlogDAL.Data;
-using BlogDAL.Data.Repository;
-using BlogDAL.Models.Users;
-using BlogPLL;
+using BlogDAL.Models;
 using BlogBLL.Ext;
 
 

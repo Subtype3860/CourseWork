@@ -1,4 +1,4 @@
-﻿using BlogDAL.Models.Users;
+﻿using BlogDAL.Models;
 
 namespace BlogPLL.ViewModels.Account
 {

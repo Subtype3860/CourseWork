@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BlogDAL.Models.Users
+namespace BlogDAL.Models
 {
     public class User : IdentityUser
     {

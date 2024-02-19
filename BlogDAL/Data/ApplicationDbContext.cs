@@ -1,4 +1,4 @@
-﻿using BlogDAL.Models.Users;
+﻿using BlogDAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

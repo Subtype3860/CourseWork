@@ -1,6 +1,5 @@
-﻿
-using AutoMapper;
-using BlogDAL.Models.Users;
+﻿using AutoMapper;
+using BlogDAL.Models;
 using BlogPLL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlogPLL.ViewModels.Account;
-using BlogDAL.Models.Users;
+using BlogDAL.Models;
 
 namespace BlogPLL
 {
