@@ -4,7 +4,6 @@ namespace BlogPLL.ViewModels.Account
 {
     public class RegisterViewModel
     {
-
         [Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
         [DataType(DataType.Text)]
         [Display(Name = "Имя", Prompt = "Введите имя")]
@@ -32,7 +31,6 @@ namespace BlogPLL.ViewModels.Account
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердить пароль", Prompt = "Введите пароль повторно")]
         public string? PasswordConfirm { get; set; }
-
         public string?  Login => EmailReg;
 
     }
