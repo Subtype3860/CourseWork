@@ -1,21 +1,26 @@
-﻿using BlogDAL.Repositories;
-using BlogDAL.UnitOfWork;
+﻿using BlogDAL.Data.Repository;
+using BlogDAL.Data.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlogBLL.Ext;
-
-public static class ServiceExtentions
+namespace BlogBLL.Ext
 {
-    public static IServiceCollection AddUnitOfWork(this IServiceCollection service)
+    public static class ServiceExtentions
     {
-        service.AddScoped<IUnitOfWork, UnitOfWork>();
-        return service;
-    }
+        public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-    public static IServiceCollection AddCustomRepository<T, TRepository>(this IServiceCollection service)
-        where T : class where TRepository : class, IRepository<T>
-    {
-        service.AddScoped<IRepository<T>, TRepository>();
-        return service;
+            return services;
+        }
+
+        public static IServiceCollection AddCustomRepository<TEntity, IRepository>(this IServiceCollection services)
+                 where TEntity : class
+                 where IRepository : class, IRepository<TEntity>
+        {
+            services.AddScoped<IRepository<TEntity>, IRepository>();
+
+            return services;
+        }
+
     }
 }
