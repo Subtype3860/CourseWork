@@ -1,7 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using BlogDAL.Models.Users
 @inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,13 +23,7 @@
                 {
                     <a asp-area="" asp-controller="Home" asp-action="Index">SocialNetwork</a>
                 }
-                else
-
-                {
-                    <a asp-area="" asp-controller="AccountManager" asp-action="MyPage">SocialNetwork</a>
-                }
                 <partial name="_LoginPartial.cshtml" />
-                <partial name="_SearchLayoutPartial" />
             </div>
         </div>
     </header>

@@ -28,8 +28,6 @@ namespace BlogPLL
             builder.Services
                 .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection))
                 .AddUnitOfWork()
-                .AddCustomRepository<Message, MessageRepository>()
-                .AddCustomRepository<Friend, FriendsRepository>()
                 .AddIdentity<User, IdentityRole>(opts =>
                    {
                        opts.Password.RequiredLength = 5;

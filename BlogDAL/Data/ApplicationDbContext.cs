@@ -1,5 +1,4 @@
-﻿using BlogDAL.Configs;
-using BlogDAL.Models.Users;
+﻿using BlogDAL.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +15,6 @@ namespace BlogDAL.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.ApplyConfiguration(new FriendConfiguration());
-            builder.ApplyConfiguration(new MessageConfuiguration());
         }
     }
 }
