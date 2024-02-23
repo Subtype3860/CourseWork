@@ -25,4 +25,19 @@
     <ProjectReference Include="..\BlogDAL\BlogDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Register\RegisterPart2.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\AccountManager\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\AccountManager\User.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\niirp\Views\Roles\Create.cshtml">
+      <Link>Views\Roles\Create.cshtml</Link>
+    </Content>
+    <Content Include="..\..\niirp\Views\Roles\Index.cshtml">
+      <Link>Views\Roles\Index.cshtml</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>

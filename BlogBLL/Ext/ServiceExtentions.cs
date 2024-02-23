@@ -1,5 +1,5 @@
-﻿using BlogDAL.Data.Repository;
-using BlogDAL.Data.UnitOfWork;
+﻿using BlogBLL.Repository;
+using BlogBLL.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogBLL.Ext
@@ -8,7 +8,7 @@ namespace BlogBLL.Ext
     {
         public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
         }

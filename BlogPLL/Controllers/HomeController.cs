@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BlogDAL.Models;
-using BlogPLL.ViewModels.Account;
 
 
-namespace AwesomeNetwork.Controllers
+namespace BlogPLL.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,14 +14,10 @@ namespace AwesomeNetwork.Controllers
             _logger = logger;
         }
 
-        [Route("")]
-        [Route("[controller]/[action]")]
         public IActionResult Index()
         {
-            return View(new MainViewModel());
+            return View();
         }
-
-        [Route("[action]")]
         public IActionResult Privacy()
         {
             return View();

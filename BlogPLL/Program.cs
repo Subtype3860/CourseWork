@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using BlogDAL.Data;
+using BlogDAL;
 using BlogDAL.Models;
+using BlogBLL;
 using BlogBLL.Ext;
 
 
@@ -13,8 +14,6 @@ namespace BlogPLL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-
             //БД
             var connection = builder.Configuration.GetConnectionString("DefaultConnection");
             var mapperConfig = new MapperConfiguration((v) =>
@@ -24,7 +23,7 @@ namespace BlogPLL
             var mapper = mapperConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
             builder.Services
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection))
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection, b=>b.MigrationsAssembly("BlogDAL")))
                 .AddUnitOfWork()
                 .AddIdentity<User, IdentityRole>(opts =>
                    {
@@ -34,7 +33,9 @@ namespace BlogPLL
                        opts.Password.RequireUppercase = false;
                        opts.Password.RequireDigit = false;
                    })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             // Add services to the container.
@@ -51,7 +52,7 @@ namespace BlogPLL
             {
                 OnPrepareResponse = ctx =>
                 {
-                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");;
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
                 }
             });
             app.UseRouting();

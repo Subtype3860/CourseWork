@@ -1,0 +1,27 @@
+﻿ @model BlogBLL.ViewModels.Account.RegisterViewModel
+ @{
+     ViewData["Title"] = "Регистрация";
+ }
+ <h2>Регистрация нового пользователя</h2>
+ <div class="container">
+     <form method="post" asp-controller="AccountManager" asp-action="Register">
+         <div asp-validation-summary="ModelOnly"></div>
+         <div>
+             <label asp-for="EmailReg"></label><br/>
+             <input class="form-control" asp-for="EmailReg"/>
+             <span asp-validation-for="EmailReg"></span>
+         </div>
+         <div>
+             <label asp-for="PasswordReg"></label><br/>
+             <input class="form-control" asp-for="PasswordReg"/>
+             <span asp-validation-for="PasswordReg"></span>
+         </div>
+         <div>
+             <label asp-for="PasswordConfirm"></label><br/>
+             <input class="form-control" asp-for="PasswordConfirm"/>
+             <span asp-validation-for="PasswordConfirm"></span>
+         </div>
+         <div>
+             <input class="btn btn-outline-primary" type="submit" value="Регистрация"/>
+         </div>
+     </form></div>
