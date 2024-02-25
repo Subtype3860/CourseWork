@@ -41,28 +41,25 @@ public class PostController : Controller
     [HttpPost]
     public async Task<IActionResult> AddPost(AddPostViewModel apvm)
     {
-        var model = _mapper.Map<Post>(apvm);
+        //Создание блога
+        var postRepository = _unitOfWork.GetRepository<Post>() as PostRepository;
+        var post = _mapper.Map<Post>(apvm);
+        await Task.Run(() => postRepository!.AddPost(post));
         //Присвоени тегов
         var tagRepository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         var postTagRepository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
-        var tags = tagRepository!.GetAllTags().ToList();
         var listTag = apvm.Tag!.Split(" ");
         foreach (var s in listTag)
         {
-            var tag = tags.FirstOrDefault(x => string.Equals(x.Stick!.ToLower(), s.ToLower()));
-            if (tag == null)
+            var q = new Tag
             {
-                tag!.Id = Guid.NewGuid().ToString();
-                tag.Stick = s.ToLower();
-                await Task.Run(() => tagRepository.AddTag(tag));
-            }
+                Id = Guid.NewGuid().ToString(),
+                Stick = s
+            };
+                await Task.Run(() => tagRepository!.AddTag(q));
 
-            await Task.Run(() => postTagRepository!.AddPostTag(new PostTag{PostId = model.Id, TagId = tag.Id}));
+            await Task.Run(() => postTagRepository!.AddPostTag(new PostTag{PostId = post.Id, TagId = q.Id}));
         }
-
-        //Создание блога
-        var postRepository = _unitOfWork.GetRepository<Post>() as PostRepository;
-        await Task.Run(() => postRepository!.AddPost(model));
         
         
         

@@ -2,12 +2,7 @@
 
 public class Tag
 {
-    public string Id { get; set; }
+    public string? Id { get; set; }
     public string? Stick { get; set; }
-    public virtual ICollection<PostTag> PostTags { get; set; }
-
-    public Tag()
-    {
-        Id = Guid.NewGuid().ToString();
-    }
+    public IEnumerable<PostTag> PostTags { get; } = new List<PostTag>();
 }
