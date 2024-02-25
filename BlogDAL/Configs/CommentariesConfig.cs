@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BlogDAL.Configs;
 
-public class CommentariesConfig : IEntityTypeConfiguration<Commentaries>
+public class CommentariesConfig : IEntityTypeConfiguration<Remark>
 {
-    public void Configure(EntityTypeBuilder<Commentaries> builder)
+    public void Configure(EntityTypeBuilder<Remark> builder)
     {
         builder.HasKey(x => x.Id);
     }

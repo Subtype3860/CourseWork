@@ -1,0 +1,24 @@
+﻿@model BlogBLL.ViewModels.Account.CreateUserViewModel
+
+@{
+    Layout = "../Admin/_Layout";
+}
+<div class="container">
+    <form method="post" asp-controller="User" asp-action="Create">
+        <div class="container">
+            <div>
+                <label asp-for="Email"></label><br>
+                <input asp-for="Email">
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div>
+                <label asp-for="Password"></label><br />
+                <input asp-for="Password">
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div>
+                <input type="submit" value="Записать"/>
+            </div>
+        </div>
+    </form>
+</div>

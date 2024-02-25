@@ -6,10 +6,6 @@ public class Post
     public string? Body { get; set; }
     public string? UserId { get; set; }
     public User? User { get; set; }
+    public DateTime DatePublic { get; set; }
     public virtual ICollection<PostTag>? PostTags { get; set; }
-
-    public Post()
-    {
-        Id = Guid.NewGuid().ToString();
-    }
 }

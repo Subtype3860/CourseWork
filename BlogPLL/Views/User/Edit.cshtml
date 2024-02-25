@@ -1,0 +1,30 @@
+﻿@model BlogBLL.ViewModels.Account.UserEditViewModel
+@{
+    Layout = "../Admin/_Layout";
+}
+
+<div class="container">
+    <form method="post" asp-controller="User" asp-action="Edit">
+        <div class="container">
+            <input type="hidden" asp-for="UserId"/>
+            <div>
+                <label asp-for="Email"></label><br/>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div>
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control"/>
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div>
+                <label asp-for="Password"></label><br/>
+                <input asp-for="Password" class="form-control"/>
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Записать"/>
+            </div>
+        </div>
+    </form>
+</div>

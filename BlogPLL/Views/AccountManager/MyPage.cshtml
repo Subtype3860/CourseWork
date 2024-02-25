@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model BlogBLL.ViewModels.Account.UserEditViewModel;
+@{
+    ViewData["Title"] = "Редактирование пользователя";
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="block-reg background-white container">
+    <h3 class="center">Редактирование пользователя</h3>
+    <div class="row justify-content-end">
+        <form asp-controller="AccountManager" asp-action="Delete" type="post" asp-route-id="@Model.UserId">
+            <input class="btn btn-danger" type="submit" value="Удалить акаут"/>
+        </form>
+    </div>
+    <form class="frm" method="post" asp-controller="AccountManager" asp-action="Update">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <div class="mrgn">
+                
+                <input type="hidden" asp-for="UserId" class="form-control"/>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="MiddleName"></label>
+                <input asp-for="MiddleName" class="form-control"/>
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mrgn">
+            <label asp-for="BirthDate"></label>
+            <input asp-for="BirthDate" class="form-control date_control"/>
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control"/>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgv">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control">
+                <span asp-validation-for="PhoneNumber"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mfgv">
+                <label asp-for="Status"></label>
+                <input asp-for="Status" class="form-control">
+                <span asp-validation-for="Status"></span>
+            </div>
+            </div><div>
+            <div class="mfgv">
+                <label asp-for="About"></label>
+                <input asp-for="About" class="form-control">
+                <span asp-validation-for="About"></span>
+            </div>
+            </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="PasswordConfirm"></label>
+                <input asp-for="PasswordConfirm" class="form-control">
+                <span asp-validation-for="PasswordConfirm"></span>
+            </div>
+            </div>
+        <div class="row">
+            <input class="btn btn-primary float-left" type="submit" value="Сохранить" />
+        </div>
+    </form>
+</div>

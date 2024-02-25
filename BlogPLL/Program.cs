@@ -1,20 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using BlogDAL.Data;
+using BlogDAL;
 using BlogDAL.Models;
+using BlogBLL;
 using BlogBLL.Ext;
-
+using BlogBLL.Repository;
 
 namespace BlogPLL
 {
-    public class Program
+    public abstract class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-
             //БД
             var connection = builder.Configuration.GetConnectionString("DefaultConnection");
             var mapperConfig = new MapperConfiguration((v) =>
@@ -24,8 +23,12 @@ namespace BlogPLL
             var mapper = mapperConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
             builder.Services
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection))
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection, b=>b.MigrationsAssembly("BlogDAL")))
                 .AddUnitOfWork()
+                .AddCustomRepository<Post, PostRepository>()
+                .AddCustomRepository<Tag, TagRepository>()
+                .AddCustomRepository<Remark, CommentRepository>()
+                .AddCustomRepository<PostTag, PostTagRepository>()
                 .AddIdentity<User, IdentityRole>(opts =>
                    {
                        opts.Password.RequiredLength = 5;
@@ -34,7 +37,9 @@ namespace BlogPLL
                        opts.Password.RequireUppercase = false;
                        opts.Password.RequireDigit = false;
                    })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             // Add services to the container.
@@ -51,7 +56,7 @@ namespace BlogPLL
             {
                 OnPrepareResponse = ctx =>
                 {
-                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");;
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
                 }
             });
             app.UseRouting();

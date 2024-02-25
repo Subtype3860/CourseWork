@@ -1,28 +1,31 @@
 ﻿using System.Diagnostics;
+using AutoMapper;
+using BlogBLL.Repository;
+using BlogBLL.UnitOfWork;
+using BlogBLL.ViewModels.Post;
 using Microsoft.AspNetCore.Mvc;
 using BlogDAL.Models;
-using BlogPLL.ViewModels.Account;
 
 
-namespace AwesomeNetwork.Controllers
+namespace BlogPLL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _logger = logger;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-
-        [Route("")]
-        [Route("[controller]/[action]")]
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(new MainViewModel());
+            var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
+            var model = repository!.GetAllPosts();
+            return View(model);
         }
-
-        [Route("[action]")]
         public IActionResult Privacy()
         {
             return View();
