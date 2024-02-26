@@ -9,17 +9,27 @@ public class PostRepository : Repository<Post>
     public PostRepository(ApplicationDbContext db) : base(db)
     {
     }
-
     public IEnumerable<Post> GetAllPosts()
     {
-        return Set;
-
+        return Set
+            .Include(x=>x.PostTags)!
+            .ThenInclude(x=>x.Tag)
+            .Include(x=>x.User);
     }
-
-    public IEnumerable<Post> GetPostByTag(Tag tag)
+    public Post GetPostById(string id)
     {
         return Set
-            .Include(x => x.PostTags!.Where(w => w.TagId == tag.Id));
+            .Include(x => x.PostTags!)
+            .ThenInclude(x => x.Tag)
+            .Include(x => x.User).First(x=>x.Id == id);
+    }
+
+    public IEnumerable<Post> GetPostByUserId(string id)
+    {
+        return Set.Where(x=>x.UserId == id)
+            .Include(x => x.PostTags!)
+            .ThenInclude(x => x.Tag)
+            .Include(x => x.User);
     }
 
     public void AddPost(Post post)

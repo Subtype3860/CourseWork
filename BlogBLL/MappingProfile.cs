@@ -35,6 +35,14 @@ public class MappingProfile : Profile
                 opt.MapFrom(c => c.Post))
             .ForMember(x => x.Id, opt =>
                 opt.MapFrom(c => c.PostId));
+        
+        CreateMap<Post, EditPostViewModel>()
+            .ForMember(x => x.Post, opt =>
+                opt.MapFrom(c => c.Body))
+            .ForMember(x => x.PostId, opt =>
+                opt.MapFrom(c => c.Id));
+        
+        
         CreateMap<GetPostViewModel, Post>();
         CreateMap<Post, GetPostViewModel>();
         CreateMap<AddPostViewModel, Post>()

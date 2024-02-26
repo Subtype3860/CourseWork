@@ -19,9 +19,9 @@ public class PostTagRepository : Repository<PostTag>
         return GetAll();
     }
 
-    public void DeletePostTag()
+    public void DeletePostTag(PostTag postTag)
     {
-        
+        Delete(postTag);
     }
 
 }

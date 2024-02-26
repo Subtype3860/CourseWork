@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogDAL
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public sealed class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,6 +20,12 @@ namespace BlogDAL
                 .ApplyConfiguration(new PostConfig())
                 .ApplyConfiguration(new CommentariesConfig())
                 .ApplyConfiguration(new PostTagConfig());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }

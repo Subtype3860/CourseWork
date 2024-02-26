@@ -45,28 +45,38 @@ public class PostController : Controller
         var postRepository = _unitOfWork.GetRepository<Post>() as PostRepository;
         var post = _mapper.Map<Post>(apvm);
         await Task.Run(() => postRepository!.AddPost(post));
+
         //Присвоени тегов
         var tagRepository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         var postTagRepository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
+
         var listTag = apvm.Tag!.Split(" ");
         foreach (var s in listTag)
         {
-            var q = new Tag
+            var w = tagRepository!.GetAllTags().FirstOrDefault(x => x.Stick!.ToLower() == s);
+            
+            var y = new Tag
             {
-                Id = Guid.NewGuid().ToString(),
-                Stick = s
+                Id = w == null? Guid.NewGuid().ToString():w.Id,
+                Stick = w == null? s :w.Stick,
             };
-                await Task.Run(() => tagRepository!.AddTag(q));
+            if(w == null)
+                await Task.Run(() => tagRepository.AddTag(y));
 
-            await Task.Run(() => postTagRepository!.AddPostTag(new PostTag{PostId = post.Id, TagId = q.Id}));
+            await Task.Run(() => postTagRepository!.AddPostTag(new PostTag{PostId = post.Id, TagId = y.Id}));
         }
-        
-        
-        
         return RedirectToAction("Index", "Home");
     }
+
     [HttpGet]
-    public IActionResult UpdatePost(EditPostViewModel model) => View(model);
+    public IActionResult UpdatePost(string id)
+    {
+        if (string.IsNullOrEmpty(id)) return RedirectToAction("Index", "Home");
+        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
+        var post = repository!.GetPostById(id);
+        var model = _mapper.Map<EditPostViewModel>(post);
+        return View(model);
+    }
     /// <summary>
     /// Обновление статьи
     /// </summary>
@@ -76,9 +86,56 @@ public class PostController : Controller
     public async Task<IActionResult> PostUpdate(EditPostViewModel epvm)
     {
         if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
+
+        var x = new Post
+        {
+            Id = "333bd4d6-edf3-4863-9148-c26987fd2ac8",
+            User = epvm.User,
+            PostTags = epvm.PostTags,
+            UserId = epvm.UserId,
+            Body = epvm.Post,
+            Heading = epvm.Heading,
+            DatePublic = epvm.DatePublic
+        };
+        
+        
+        
+        
+        var repositoryPost = _unitOfWork.GetRepository<Post>() as PostRepository;
+        
+        // var repositoryPostTag = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
+        // var repositoryTeg = _unitOfWork.GetRepository<Tag>() as TagRepository;
+        //
+        // //редактирование тегов
+        // var post = await Task.FromResult(repositoryPost!.GetPostById(epvm.PostId!));
+        // var listTag = epvm.Tag!.Split("#");
+        // foreach (var postTag in post.PostTags!.Where(x=>x.PostId==epvm.PostId))
+        // {
+        //     var x = listTag.FirstOrDefault(w => string.Equals(w, postTag.Tag!.Stick));
+        //     if (string.IsNullOrEmpty(x))
+        //     {
+        //         repositoryPostTag!.DeletePostTag(postTag);
+        //     }
+        // }
+        // foreach (var s in listTag)
+        // {
+        //     if(string.IsNullOrEmpty(s))continue;
+        //     var postTag = post.PostTags!
+        //         .Where(x => x.PostId == epvm.PostId)
+        //         .FirstOrDefault(x => string.Equals(x.Tag!.Stick, s));
+        //     if (postTag == default)
+        //     {
+        //         var tagId = Guid.NewGuid().ToString();
+        //         repositoryTeg!.AddTag(new Tag{Id = tagId, Stick = s});
+        //         repositoryPostTag!.AddPostTag(new PostTag{PostId = epvm.PostId, TagId = tagId});
+        //     }
+        // }
+        
+        
+        
         var model = _mapper.Map<Post>(epvm);
-        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
-        await Task.Run(() => repository!.PostUpdate(model));
+        
+        await Task.Run(() => repositoryPost!.PostUpdate(x));
         return RedirectToAction("Index", "Home");
     }
     /// <summary>
@@ -104,15 +161,7 @@ public class PostController : Controller
             var post = await Task.FromResult(repositoryPost!.GetAllPosts().FirstOrDefault(x => x.Id == id));
             await Task.Run(() => repositoryPost.Delete(post!));
         }
-
         return RedirectToAction("Index", "Home");
-    }
-
-    private async Task<IEnumerable<Post>> GetAll()
-    {
-        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
-        var post = await Task.FromResult(repository!.GetAllPosts());
-        return post;
     }
     /// <summary>
     /// Получение всех статей
@@ -121,11 +170,8 @@ public class PostController : Controller
     [HttpGet]
     public IActionResult GetAllPost()
     {
-        var post = GetAll().Result;
-        var model = new GetPostViewModel
-        {
-            Posts = post
-        };
+        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
+        var model = repository!.GetAll();
         return View(model);
     }
     /// <summary>
@@ -134,15 +180,25 @@ public class PostController : Controller
     /// <param name="id">Передача Id User</param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult>GetPostByUser(string id)
+    public async Task<IActionResult>GetPostByUserId(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null) return RedirectToAction("GetAllPost");
-        var post = GetAll().Result.Where(x => x.UserId == user.Id);
-        var model = new GetPostViewModel
-        {
-            Posts = post
-        };
+        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
+        var post = await Task.FromResult(repository!.GetPostByUserId(id));
+        return View(post);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPostById(string id)
+    {
+        var user = User;
+        var userId = _userManager.GetUserAsync(user);
+        var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
+        var post = await Task.FromResult(repository!.GetPostById(id));
+        var model = _mapper.Map<GetPostViewModel>(post);
+        if(user.Identity!.IsAuthenticated)
+            model.Log = string.Equals(userId.Result!.Id, model.UserId);
         return View(model);
     }
 }

@@ -1,2 +1,12 @@
-﻿@model BlogBLL.ViewModels.Post.GetPostViewModel
-
+﻿@model IEnumerable<BlogDAL.Models.Post>
+@{
+    var list = Model;
+}
+<div>
+    @{
+        foreach (var h in list)
+        {
+            <h3>@h.Heading</h3>
+        }
+    }
+</div>

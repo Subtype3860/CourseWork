@@ -42,8 +42,7 @@ namespace BlogBLL.Repository
 
         public void Update(T item)
         {
-            Set.Update(item);
-            _db.SaveChanges();
+            Set.Entry(item).State = EntityState.Modified;
         }
     }
 }
