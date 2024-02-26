@@ -23,7 +23,8 @@ namespace BlogPLL
             var mapper = mapperConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
             builder.Services
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection, b=>b.MigrationsAssembly("BlogDAL")))
+                .AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlite(connection, b=>b.MigrationsAssembly("BlogDAL")))                
                 .AddUnitOfWork()
                 .AddCustomRepository<Post, PostRepository>()
                 .AddCustomRepository<Tag, TagRepository>()
@@ -38,7 +39,7 @@ namespace BlogPLL
                        opts.Password.RequireDigit = false;
                    })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders();   
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

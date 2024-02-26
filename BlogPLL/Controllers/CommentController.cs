@@ -30,7 +30,7 @@ public class CommentController : Controller
         if (!ModelState.IsValid) return RedirectToAction();
         var model = _mapper.Map<Remark>(acvm);
         var repository = _unitOfWork.GetRepository<Remark>() as CommentRepository;
-        await Task.Run(() => repository!.AddComment(model));
+        repository!.AddComment(model);
         return RedirectToAction("Index", "Home");
     }
     [HttpGet]
@@ -46,7 +46,7 @@ public class CommentController : Controller
         if (!ModelState.IsValid) return View("UpdateComment");
         var model = _mapper.Map<Remark>(ecvm);
         var repository = _unitOfWork.GetRepository<Remark>() as CommentRepository;
-        await Task.Run(() => repository!.UpdateComment(model));
+        repository!.UpdateComment(model);
         return RedirectToAction("Index", "Home");
     }
     /// <summary>
@@ -86,7 +86,7 @@ public class CommentController : Controller
     private async Task<IEnumerable<GetCommentViewModel>> GetAll()
     {
         var repository = _unitOfWork.GetRepository<Remark>() as CommentRepository;
-        var commentaries = await Task.FromResult(repository!.GetAllComments());
+        var commentaries = repository!.GetAllComments();
         return (IEnumerable<GetCommentViewModel>)commentaries;
     }
 

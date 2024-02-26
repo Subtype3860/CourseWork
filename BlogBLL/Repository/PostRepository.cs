@@ -11,26 +11,28 @@ public class PostRepository : Repository<Post>
     }
     public IEnumerable<Post> GetAllPosts()
     {
-        return Set
-            .Include(x=>x.PostTags)!
-            .ThenInclude(x=>x.Tag)
-            .Include(x=>x.User);
+        //return Set
+        //    .Include(x => x.PostTags)!
+        //    .ThenInclude(x => x.Tag)
+        //    .Include(x => x.User);
+        return GetAll();
     }
-    public Post GetPostById(string id)
-    {
-        return Set
-            .Include(x => x.PostTags!)
-            .ThenInclude(x => x.Tag)
-            .Include(x => x.User).First(x=>x.Id == id);
-    }
+    //public Post GetPostById(string id)
+    //{
+    //    return Set
+    //        .Include(x => x.PostTags!)
+    //        .ThenInclude(x => x.Tag)
+    //        .Include(x => x.User).First(x => x.Id == id);
+    //}
 
-    public IEnumerable<Post> GetPostByUserId(string id)
-    {
-        return Set.Where(x=>x.UserId == id)
-            .Include(x => x.PostTags!)
-            .ThenInclude(x => x.Tag)
-            .Include(x => x.User);
-    }
+    //public IEnumerable<Post> GetPostByUserId(string id)
+    //{
+    //    return Set
+    //        .Where(x => x.UserId == id)
+    //        .Include(x => x.PostTags!)
+    //        .ThenInclude(x => x.Tag)
+    //        .Include(x => x.User);
+    //}
 
     public void AddPost(Post post)
     {

@@ -30,7 +30,7 @@ public class TagController : Controller
         if (!ModelState.IsValid) return RedirectToAction("AddTag");
         var model = _mapper.Map<Tag>(atvm);
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        await Task.Run(() => repository!.AddTag(model));
+        repository!.AddTag(model);
         return RedirectToAction("Index", "Home");
     }
 
@@ -43,36 +43,35 @@ public class TagController : Controller
         if (!ModelState.IsValid) return RedirectToAction("UpdateTag");
         var model = _mapper.Map<Tag>(etvm);
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        await Task.Run(() => repository!.UpdateTag(model));
+        repository!.UpdateTag(model);
         return RedirectToAction("Index", "Home");
     }
-
     
-    private async Task<IEnumerable<Tag>> GetAll()
+    private IEnumerable<Tag> GetAll()
     {
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        return await Task.Run(() => repository!.GetAllTags());
+        return repository!.GetAllTags();
     }
 
     [HttpPost]
     public async Task<IActionResult> TagDelete(string id)
     {
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        var model = await Task.FromResult(repository!.GetAllTags());
+        var model = repository!.GetAllTags();
         var tag = model.FirstOrDefault(x=>x.Id == id);
-        await Task.Run(() => repository!.TagRemove(tag!));
+        repository!.TagRemove(tag!);
         return RedirectToAction("Index", "Home");
     }
     [HttpGet]
     public IActionResult GetAllTag()
     {
-        var model = (IEnumerable<GetTagViewModel>)GetAll().Result;
+        var model = (IEnumerable<GetTagViewModel>)GetAll();
         return View(model);
     }
     [HttpGet]
     public IActionResult GetTeg(string id) 
     {
-        var model = GetAll().Result.FirstOrDefault(x=>x.Id == id);
+        var model = GetAll().FirstOrDefault(x=>x.Id == id);
         var teg = _mapper.Map<GetTagViewModel>(model);
         return View(teg);
     }

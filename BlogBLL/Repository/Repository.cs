@@ -12,9 +12,8 @@ namespace BlogBLL.Repository
         public Repository(ApplicationDbContext db)
         {
             _db = db;
-            var set =_db.Set<T>();
+            var set = _db.Set<T>();
             set.Load();
-
             Set = set;
         }
 
@@ -32,12 +31,12 @@ namespace BlogBLL.Repository
 
         public T Get(string id)
         {
-            return Set.Find(id)!;
+            return null;
         }
 
         public IEnumerable<T> GetAll()
         {
-            return Set;
+            return Set.AsQueryable().AsNoTracking();
         }
 
         public void Update(T item)
