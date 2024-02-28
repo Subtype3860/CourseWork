@@ -1,4 +1,4 @@
-﻿@model BlogBLL.ViewModels.Post.EditPostViewModel
+﻿ @model BlogBLL.ViewModels.Post.EditPostViewModel
 @{
     ViewData["Title"] = $"Редактироване статьи {Model.Heading}";
     var tag = string.Empty;
@@ -12,11 +12,12 @@
         <input type="hidden" asp-for="PostId"/>
         <input type="hidden" asp-for="Heading"/>
         <input type="hidden" asp-for="DatePublic"/>
-        <input asp-for="UserId"/>
+        <input type="hidden" asp-for="UserId"/>
         <h3>@Model.Heading</h3>
         <textarea asp-for="Post" class="form-control"></textarea>
         <small>Тэги</small><br/>
-        <input asp-for="Tag" class="form-control" value="@tag"/>
+        <a asp-controller="Tag" asp-action="UpdateTag" asp-route-tags="@tag" asp-route-postId="@Model.PostId">@tag</a><br/>
+        <sup><small>Редактирование тегов</small></sup><br/>
         <input type="submit" class="bt btn-primary" value="Записать"/>
     </form>
 </div>

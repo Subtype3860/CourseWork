@@ -9,6 +9,8 @@ public class GetPostViewModel
     public string? UserId { get; set; }
     public DateTime DatePublic { get; set; }
     public string? Heading { get; set; }
-    public virtual ICollection<PostTag>? PostTags { get; set; }
-    public bool Log { get; set; } = false;
+    public virtual IEnumerable<PostTag>? PostTags { get; set; }
+    public virtual IEnumerable<Remark>? Remarks { get; set; }
+    public bool Log { get; set; }
+    public string LoUserId { get; set; }
 }

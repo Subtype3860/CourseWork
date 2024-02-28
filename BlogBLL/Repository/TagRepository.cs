@@ -29,4 +29,15 @@ public class TagRepository : Repository<Tag>
     {
         Delete(tag);
     }
+
+    public Tag GetTagById(string id)
+    {
+        return Get(id);
+    }
+
+    public Tag GetTagByName(string name)
+    {
+        var tag = Set.FirstOrDefault(x => x.Stick == name);
+        return tag!;
+    }
 }

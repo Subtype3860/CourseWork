@@ -11,6 +11,6 @@ namespace BlogDAL.Models
         public byte[]? Image{ get; set; }
         public string? Status { get; set; }
         public string? About { get; set; }
-
+        public virtual ICollection<Remark>? Remarks { get; set; }
     }
 }

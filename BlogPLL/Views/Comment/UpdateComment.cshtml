@@ -1,2 +1,17 @@
 ﻿@model BlogBLL.ViewModels.Comment.EditCommentViewModel
-
+@{
+    ViewData["Title"] = "Редактирование Коментария";
+}
+<div>
+    <form asp-controller="Comment" asp-action="CommentUpdate" method="post">
+        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="UserId">
+        <input type="hidden" asp-for="PostId">
+        <input type="hidden" asp-for="DatePublic"/>
+        <div>
+            <label asp-for="Comment"></label>
+            <textarea asp-for="Comment" class="form-control" aria-valuetext="@Model.Comment"></textarea>
+            <input type="submit" class="btn btn-secondary"/>
+        </div>
+    </form>
+</div>

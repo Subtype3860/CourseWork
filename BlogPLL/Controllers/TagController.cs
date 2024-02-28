@@ -17,6 +17,7 @@ public class TagController : Controller
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     [HttpGet]
     public IActionResult AddTag(AddTagViewModel model) => View(model);
     /// <summary>
@@ -25,7 +26,7 @@ public class TagController : Controller
     /// <param name="atvm">AddTagViewModel</param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> TagAdd(AddTagViewModel atvm)
+    public IActionResult TagAdd(AddTagViewModel atvm)
     {
         if (!ModelState.IsValid) return RedirectToAction("AddTag");
         var model = _mapper.Map<Tag>(atvm);
@@ -33,18 +34,47 @@ public class TagController : Controller
         repository!.AddTag(model);
         return RedirectToAction("Index", "Home");
     }
-
+    /// <summary>
+    /// Обновление TagToPost
+    /// </summary>
+    /// <param name="tags"></param>
+    /// <param name="postId"></param>
+    /// <returns></returns>
     [HttpGet]
-    public IActionResult UpdateTag(EditTagViewModel model) => View(model);
+    public IActionResult UpdateTag(string? tags, string postId)
+    {
+        if (string.IsNullOrEmpty(tags)) return NotFound();
+        var stringTags = tags.Split("#");
+        var listTag = new List<Tag>();
+        foreach (var tag in stringTags)
+        {
+            if(string.IsNullOrEmpty(tag)) continue;
+            var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+            var tagByName = repository!.GetTagByName(tag);
+            listTag.Add(tagByName);
+        }
 
+        var model = new EditTagViewModel
+        {
+            Tags = listTag,
+            PostId = postId
+        };
+        return View(model);
+    }
+    /// <summary>
+    /// Обновление Тэг
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <param name="tagIp"></param>
+    /// <param name="postId"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> TagUpdate(EditTagViewModel etvm)
+    public IActionResult TagUpdate(string tag, string tagId, string postId)
     {
         if (!ModelState.IsValid) return RedirectToAction("UpdateTag");
-        var model = _mapper.Map<Tag>(etvm);
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        repository!.UpdateTag(model);
-        return RedirectToAction("Index", "Home");
+        repository!.UpdateTag(new Tag{Id = tagId, Stick = tag});
+        return RedirectToAction("UpdatePost", "Post", new {id = postId});
     }
     
     private IEnumerable<Tag> GetAll()
@@ -52,22 +82,35 @@ public class TagController : Controller
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         return repository!.GetAllTags();
     }
-
+    /// <summary>
+    /// Удаление связи PostToTag
+    /// </summary>
+    /// <param name="tagId"></param>
+    /// <param name="postId"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> TagDelete(string id)
+    public IActionResult PostTagDelete(string tagId, string postId)
     {
-        var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        var model = repository!.GetAllTags();
-        var tag = model.FirstOrDefault(x=>x.Id == id);
-        repository!.TagRemove(tag!);
-        return RedirectToAction("Index", "Home");
+        var repository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
+        var postTag = repository!.GetAllPostTags().FirstOrDefault(x => x.PostId == postId && x.TagId == tagId);
+        repository!.DeletePostTag(postTag!);
+        return RedirectToAction("UpdatePost", "Post", new {id = postId});
     }
+    /// <summary>
+    /// Получить все тэги
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult GetAllTag()
     {
-        var model = (IEnumerable<GetTagViewModel>)GetAll();
-        return View(model);
+        var model = GetAll();
+        return View((IEnumerable<GetTagViewModel>)model);
     }
+    /// <summary>
+    /// Получить тэг по ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult GetTeg(string id) 
     {

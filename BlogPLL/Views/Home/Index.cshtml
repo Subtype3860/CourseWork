@@ -16,22 +16,6 @@ else
     span{
     font-style: italic;
     }
-    a:link{
-    color:#0b2e13;
-    text-decoration:none
-    }
-    a:visited{
-    color:#0b2e13;
-    text-decoration:none
-    }
-    a:hover{
-    color:red;
-    text-decoration:underline
-    }
-    a:active{
-    color:yellow;
-    text-decoration:underline
-    }
 </style>
 <div>
     @foreach (var blog in Model)
@@ -39,11 +23,11 @@ else
         <a asp-controller="Post" asp-action="GetPostById" asp-route-id="@blog.Id">
             <h4>@blog.Heading</h4>
         </a>
-        <small><span>Дата публикаци: </span>@blog.DatePublic <span>Автор: </span>@blog.User!.UserName</small><br/>
+ @*        <small><span>Дата публикаци: </span>@blog.DatePublic <span>Автор: </span>@blog.User!.UserName</small><br/>
         @foreach (var tag in blog.PostTags!)
         {
             <small>#@tag.Tag!.Stick</small>
-        }
+        } *@
     }
 </div>
 

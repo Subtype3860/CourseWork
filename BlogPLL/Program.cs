@@ -24,11 +24,14 @@ namespace BlogPLL
             builder.Services.AddSingleton(mapper);
             builder.Services
                 .AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlite(connection, b=>b.MigrationsAssembly("BlogDAL")))                
+                {
+                    options.UseSqlite(connection, b => b.MigrationsAssembly("BlogDAL"));
+                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                })                
                 .AddUnitOfWork()
                 .AddCustomRepository<Post, PostRepository>()
                 .AddCustomRepository<Tag, TagRepository>()
-                .AddCustomRepository<Remark, CommentRepository>()
+                .AddCustomRepository<Remark, RemarkRepository>()
                 .AddCustomRepository<PostTag, PostTagRepository>()
                 .AddIdentity<User, IdentityRole>(opts =>
                    {

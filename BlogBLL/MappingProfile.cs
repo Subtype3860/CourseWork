@@ -71,7 +71,5 @@ public class MappingProfile : Profile
         //MappingTag
         CreateMap<AddTagViewModel, Tag>();
         CreateMap<Tag, AddTagViewModel>();
-        CreateMap<EditTagViewModel, Tag>();
-        CreateMap<Tag, EditTagViewModel>();
     }
 }

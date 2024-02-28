@@ -1,11 +1,12 @@
 ﻿using BlogDAL;
+using BlogDAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogBLL.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private Microsoft.EntityFrameworkCore.DbContext _db;
+        private DbContext _db;
 
         public DbSet<T> Set { get; private set; }
 
@@ -17,9 +18,25 @@ namespace BlogBLL.Repository
             Set = set;
         }
 
+        public IEnumerable<T> GetAll()
+        {
+            return Set;
+        }
+
+        public T Get(string id)
+        {
+            return Set.Find(id)!;
+        }
+
         public void Create(T item)
         {
             Set.Add(item);
+            _db.SaveChanges();
+        }
+
+        public void Update(T item)
+        {
+            Set.Entry(item).State = EntityState.Modified;
             _db.SaveChanges();
         }
 
@@ -27,21 +44,6 @@ namespace BlogBLL.Repository
         {
             Set.Remove(item);
             _db.SaveChanges();
-        }
-
-        public T Get(string id)
-        {
-            return null;
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return Set.AsQueryable().AsNoTracking();
-        }
-
-        public void Update(T item)
-        {
-            Set.Entry(item).State = EntityState.Modified;
         }
     }
 }

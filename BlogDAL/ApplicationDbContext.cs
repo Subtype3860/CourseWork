@@ -18,7 +18,7 @@ namespace BlogDAL
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new TagConfig())
                 .ApplyConfiguration(new PostConfig())
-                .ApplyConfiguration(new CommentariesConfig())
+                .ApplyConfiguration(new RemarkConfig())
                 .ApplyConfiguration(new PostTagConfig());
         }
 

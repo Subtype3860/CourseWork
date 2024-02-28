@@ -9,4 +9,5 @@ public class Post
     public DateTime DatePublic { get; set; }
     public string? Heading { get; set; }
     public virtual ICollection<PostTag>? PostTags { get; set; }
+    public virtual ICollection<Remark>? Remarks { get; set; }
 }
