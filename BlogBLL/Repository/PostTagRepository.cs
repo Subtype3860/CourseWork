@@ -19,6 +19,13 @@ public class PostTagRepository : Repository<PostTag>
             .Include(x=>x.Post)
             .Include(x=>x.Tag);
     }
+
+    public IEnumerable<PostTag> GetPostTagByPostId(string id)
+    {
+        return Set.Where(x=>string.Equals(x.PostId, id))
+            .Include(x => x.Post)
+            .Include(x => x.Tag);
+    }
     public void DeletePostTag(PostTag postTag)
     {
         Delete(postTag);

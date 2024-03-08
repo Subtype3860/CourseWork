@@ -43,8 +43,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\img\ico\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

@@ -33,7 +33,7 @@ namespace BlogPLL
                 .AddCustomRepository<Tag, TagRepository>()
                 .AddCustomRepository<Remark, RemarkRepository>()
                 .AddCustomRepository<PostTag, PostTagRepository>()
-                .AddIdentity<User, IdentityRole>(opts =>
+                .AddIdentity<User, AppRole>(opts =>
                    {
                        opts.Password.RequiredLength = 5;
                        opts.Password.RequireNonAlphanumeric = false;

@@ -8,36 +8,41 @@
     <h3>@Model.Heading</h3>
     <hr/>
     <p>@Model.Body</p>
-    @if (Model.Log || User.IsInRole("moderator"))
-    {
-        <div class="row">
-            <a class="notstyle" title="Редактировать пост" asp-controller="Post" asp-action="UpdatePost" asp-route-id="@Model.Id" style="margin-right: 30px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
-                    <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>
-                </svg>
-            </a>
-            <form class="hide-submit" asp-controller="Post" asp-action="DeletePost" method="post">
-                <input type="hidden" asp-for="Id" />
-                <label title="Удалить пост">
-                    <input type="submit"/>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                      <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                    </svg>
-                </label>
-            </form>
+    <div class="row">
+        <div class="col-11">
+            <small>
+                Теги:&nbsp
+                @foreach (var postag in Model.PostTags!)
+                {
+                    <span>@postag.Tag!.Stick&nbsp</span>
+                }
+            </small>
         </div>
-    }
+        @if (Model.Log || User.IsInRole("moderator"))
+            {
+                <div class="col-1">
+                    <a class="notstyle" title="Редактировать пост" asp-controller="Post" asp-action="UpdatePost" asp-route-id="@Model.Id" style="margin-right: 30px">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+                            <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>
+                        </svg>Редактировать
+                    </a>
+                </div>
+            }
+    </div>
+    
     <div>
         @foreach (var remark in Model.Remarks!)
         {
-            <hr/>
-            <pre>@remark.Comment</pre><br/>
+            <hr />
+            <pre class="offset-1">@remark.Comment</pre>
             <div class="row">
-                <div class="col-10">
-                    <small style="margin-bottom: 30px"><span>Дата публикации:&nbsp</span>@remark.DatePublic&nbsp<smal>Автор:&nbsp</smal>@remark.User!.UserName</small>
+                <div class="col-9 offset-1">
+                    <p style="margin-top: 0; padding-top: 0;">
+                        <small style="margin-bottom: 30px"><span>Дата публикации:&nbsp</span>@remark.DatePublic&nbsp<smal>Автор:&nbsp</smal>@remark.User!.UserName</small>
+                    </p>
                 </div>
-                @if (User.IsInRole("moderator")|| remark.UserId == Model.LoUserId)
+                @if (User.IsInRole("moderator") || remark.UserId == Model.LoUserId)
                 {
                     <div class="col-1">
                         <a asp-controller="Comment" asp-action="UpdateComment" asp-route-id="@remark.Id" asp-route-comment="@remark.Comment">
@@ -58,7 +63,6 @@
                             </label>
                         </form>
                     </div>
-                    
                 }
             </div>
         }

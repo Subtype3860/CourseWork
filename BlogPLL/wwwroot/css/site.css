@@ -62,20 +62,52 @@ a:visited{
 }
 a:hover{
   color:red;
-  text-decoration:underline
+  text-decoration:none;
 }
 a:active{
   color:yellow;
-  text-decoration:underline
+  text-decoration:none;
 }
 form.hide-submit input[type="submit"] {
   display: none;
 }
 svg:hover{
   color:red;
-  text-decoration:underline
+  text-decoration:underline;
+  border-color: #1b6ec2;
+  border-width: medium;
+  cursor: pointer;
 }
 label span{
   font-style: italic;
+}
+.card-header{
+  padding: 20px;
+  -webkit-box-shadow: -1px 10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+  -moz-box-shadow: -1px 10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+  box-shadow: -1px 10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+}
+.card-body{
+  padding: 20px;
+  box-shadow:
+          inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+          0 0 0 2px rgb(255, 255, 255),
+          0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+.card-footer{
+  padding: 20px;
+  -webkit-box-shadow: -1px -10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+  -moz-box-shadow: -1px -10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+  box-shadow: -1px -10px 28px 2px rgba(47, 49, 50, 0.2) inset;
+}
+
+.adminPanel{
+  background-color: #eee;
+  background-image: linear-gradient(left,gray,white);
+  background-image: -o-linear-gradient(left,gray,white);
+  background-image: -moz-linear-gradient(left,gray,white);
+  background-image: -webkit-linear-gradient(left,gray,white);
+  padding-left: 30px;
+  border-bottom-left-radius: 30px;
 }
 

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model BlogBLL.ViewModels.Account.UserEditViewModel;
+@model BlogBLL.ViewModels.User.UserEditViewModel;
 @{
     ViewData["Title"] = "Редактирование пользователя";
 }
@@ -17,10 +17,10 @@
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <div class="mrgn">
-                
-                <input type="hidden" asp-for="UserId" class="form-control"/>
+                <input type="hidden" asp-for="Email"/>
+                <input type="hidden" asp-for="UserId"/>
                 <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
+            </div>  
         </div>
         <div>
             <div class="mrgn">

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogBLL.Ext;
 using BlogBLL.Repository;
 using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Post;
@@ -25,10 +26,16 @@ public class PostController : Controller
     {
         var user = User;
         var result = await _userManager.GetUserAsync(user);
+
+        var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+        var tag = repository!.GetAllTags();
+
         var model = new AddPostViewModel
         {
             PostId = Guid.NewGuid().ToString(),
-            UserId = result!.Id
+            UserId = result!.Id,
+            Tags = tag.ToList()
+            
         };
         return View(model);
     }
@@ -47,28 +54,10 @@ public class PostController : Controller
         postRepository!.AddPost(post);
 
         //Присвоение тегов
-        var tagRepository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         var postTagRepository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
-
-        if (!string.IsNullOrEmpty(apvm.Tag))
+        foreach (var pt in apvm.TagPostUser!)
         {
-            var listChar = new[] { '_', ',', '.', '#', ';' };
-
-            var listTag = apvm.Tag!.Replace("#", " ").Replace(";", " ").Replace("_", " ").Split(" ");
-            foreach (var s in listTag)
-            {
-                var w = tagRepository!.GetAllTags().FirstOrDefault(x => x.Stick!.ToLower() == s);
-
-                var y = new Tag
-                {
-                    Id = w == null ? Guid.NewGuid().ToString() : w.Id,
-                    Stick = w == null ? s : w.Stick,
-                };
-                if (w == null)
-                    tagRepository.AddTag(y);
-
-                postTagRepository!.AddPostTag(new PostTag { PostId = post.Id, TagId = y.Id });
-            }
+            postTagRepository!.AddPostTag(new PostTag{PostId = post.Id, TagId = pt});
         }
         return RedirectToAction("Index", "Home");
     }
@@ -80,20 +69,23 @@ public class PostController : Controller
         var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
         var post = repository!.GetAllPosts().FirstOrDefault(x=>x.Id == id);
         var model = _mapper.Map<EditPostViewModel>(post);
+        var repositoryTag = _unitOfWork.GetRepository<Tag>() as TagRepository;
+        var listTag = repositoryTag!.GetAllTags().ToList();
+        model.Tags = listTag;
         return View(model);
     }
     /// <summary>
     /// Обновление статьи
     /// </summary>
-    /// <param name="epvm">Передача ViewModel "EditPostViewModel"</param>
+    /// <param name="upvm">Передача ViewModel "EditPostViewModel"</param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> PostUpdate(EditPostViewModel epvm)
+    public IActionResult PostUpdate(UpdatePostViewModel upvm)
     {
         if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
-        var repositoryPost = _unitOfWork.GetRepository<Post>() as PostRepository;
-        var model = _mapper.Map<Post>(epvm);
-        await Task.Run(() => repositoryPost!.PostUpdate(model));
+        var postExtentions = new PostExtentions(_unitOfWork);
+        postExtentions.UpdatePostExt(upvm);
+        postExtentions.UpdatePostTagExt(upvm);
         return RedirectToAction("Index", "Home");
     }
     /// <summary>
@@ -102,22 +94,28 @@ public class PostController : Controller
     /// <param name="id">Передача Id Post</param>
     /// <returns></returns>
     [HttpPost]
-    public IActionResult DeletePost(string id)
+    public async Task<IActionResult> DeletePost(string id)
     {
         if (!string.IsNullOrEmpty(id))
         {
+            //Удаление комментариев
+            var repositoryRemark = _unitOfWork.GetRepository<Remark>() as RemarkRepository;
+            var listRemark = repositoryRemark!.GetCommentByPostId(id);
+            foreach (var remark in listRemark)
+            {
+                await Task.Run(() => repositoryRemark.RemoveComment(remark));
+            }
             //Удаление статьи
             var repositoryPost = _unitOfWork.GetRepository<Post>() as PostRepository;
             var post = repositoryPost!.GetAllPosts().FirstOrDefault(x => x.Id == id);
-            repositoryPost.Delete(post!);
-
+            await Task.Run(() => repositoryPost.Delete(post!));
             //Удаление связей с Тегами
             var repositoryPostTeg = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
             var postTag =
                 repositoryPostTeg!.GetAllPostTags().Where(x => x.PostId == id);
             foreach (var pt in postTag)
             {
-                repositoryPostTeg.Delete(pt);
+                await Task.Run(() => repositoryPostTeg.Delete(pt));
             }
         }
         return RedirectToAction("Index", "Home");
@@ -155,11 +153,14 @@ public class PostController : Controller
         var userId = await _userManager.GetUserAsync(user);
         var repository = _unitOfWork.GetRepository<Post>() as PostRepository;
         var post = repository!.GetPostById(id);
+        //Увеличение счётчика просмотров
+        post.Look += 1;
+        repository.PostUpdate(post);
         var model = _mapper.Map<GetPostViewModel>(post);
         var repositoryRemark = _unitOfWork.GetRepository<Remark>() as RemarkRepository;
         var modelRemarks = repositoryRemark!.GetCommentByPostId(model.Id!);
         model.Remarks = modelRemarks.ToList();
-        model.LoUserId = userId!.Id;
+        model.LoUserId = userId != null? userId.Id: string.Empty;
         if(user.Identity!.IsAuthenticated)
             model.Log = string.Equals(userId!.Id, model.UserId);
         return View(model);

@@ -1,4 +1,5 @@
 ﻿using BlogBLL.ViewModels.Account;
+using BlogBLL.ViewModels.User;
 using BlogDAL.Models;
 
 namespace BlogBLL.Ext

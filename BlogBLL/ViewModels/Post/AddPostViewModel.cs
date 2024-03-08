@@ -20,7 +20,7 @@ public class AddPostViewModel
     
     [Display(Name = "Заголовок статьи")]
     public string? Heading { get; set; }
-    
-    [Display(Name ="Теги")]
-    public string? Tag { get; set; }
+
+    public IList<BlogDAL.Models.Tag>? Tags { get; set; }
+    public IList<string>? TagPostUser { get; set; } 
 }

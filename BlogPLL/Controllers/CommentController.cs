@@ -48,7 +48,7 @@ public class CommentController : Controller
     [HttpGet]
     [Authorize]
     
-    public IActionResult UpdateComment(string id, string comment)
+    public IActionResult UpdateComment(string id, string? comment)
     {
         var repository = _unitOfWork.GetRepository<Remark>() as RemarkRepository;
         var remark = repository!.GetRemarkById(id);
@@ -68,7 +68,7 @@ public class CommentController : Controller
         var model = _mapper.Map<Remark>(ecvm);
         var repository = _unitOfWork.GetRepository<Remark>() as RemarkRepository;
         repository!.UpdateComment(model);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("GetPostById", "Post", new{id = model.PostId});
     }
     /// <summary>
     /// Удаление комментария

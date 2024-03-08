@@ -10,4 +10,5 @@ public class Post
     public string? Heading { get; set; }
     public virtual ICollection<PostTag>? PostTags { get; set; }
     public virtual ICollection<Remark>? Remarks { get; set; }
+    public int Look { get; set; } = 0;
 }

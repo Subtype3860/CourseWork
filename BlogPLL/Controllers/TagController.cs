@@ -3,6 +3,7 @@ using BlogBLL.Repository;
 using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Tag;
 using BlogDAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogPLL.Controllers;
@@ -11,17 +12,19 @@ public class TagController : Controller
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly UserManager<User> _userManager;
 
-    public TagController(IMapper mapper, IUnitOfWork unitOfWork)
+    public TagController(IMapper mapper, IUnitOfWork unitOfWork, UserManager<User> userManager)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _userManager = userManager;
     }
 
     [HttpGet]
-    public IActionResult AddTag(AddTagViewModel model) => View(model);
+    public IActionResult AddTag() => View();
     /// <summary>
-    /// Создание тэг
+    /// Создание Тег
     /// </summary>
     /// <param name="atvm">AddTagViewModel</param>
     /// <returns></returns>
@@ -30,6 +33,7 @@ public class TagController : Controller
     {
         if (!ModelState.IsValid) return RedirectToAction("AddTag");
         var model = _mapper.Map<Tag>(atvm);
+        model.Id = Guid.NewGuid().ToString();
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         repository!.AddTag(model);
         return RedirectToAction("Index", "Home");
@@ -37,44 +41,30 @@ public class TagController : Controller
     /// <summary>
     /// Обновление TagToPost
     /// </summary>
-    /// <param name="tags"></param>
-    /// <param name="postId"></param>
+    /// <param name="tagId"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult UpdateTag(string? tags, string postId)
+    public IActionResult UpdateTag(string tagId )
     {
-        if (string.IsNullOrEmpty(tags)) return NotFound();
-        var stringTags = tags.Split("#");
-        var listTag = new List<Tag>();
-        foreach (var tag in stringTags)
-        {
-            if(string.IsNullOrEmpty(tag)) continue;
-            var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-            var tagByName = repository!.GetTagByName(tag);
-            listTag.Add(tagByName);
-        }
-
-        var model = new EditTagViewModel
-        {
-            Tags = listTag,
-            PostId = postId
-        };
-        return View(model);
+        if (string.IsNullOrEmpty(tagId)) return RedirectToAction("GoWrong", "Error");
+        var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+        var model = repository!.GetTagById(tagId);
+        var tag = _mapper.Map<EditTagViewModel>(model);
+        return View(tag);
     }
     /// <summary>
-    /// Обновление Тэг
+    /// Обновление Тeг
     /// </summary>
-    /// <param name="tag"></param>
-    /// <param name="tagIp"></param>
-    /// <param name="postId"></param>
+    /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
-    public IActionResult TagUpdate(string tag, string tagId, string postId)
+    public IActionResult TagUpdate(EditTagViewModel model)
     {
         if (!ModelState.IsValid) return RedirectToAction("UpdateTag");
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
-        repository!.UpdateTag(new Tag{Id = tagId, Stick = tag});
-        return RedirectToAction("UpdatePost", "Post", new {id = postId});
+        var tag = _mapper.Map<Tag>(model);
+        repository!.UpdateTag(tag);
+        return RedirectToAction("GetAllTag");
     }
     
     private IEnumerable<Tag> GetAll()
@@ -93,21 +83,31 @@ public class TagController : Controller
     {
         var repository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
         var postTag = repository!.GetAllPostTags().FirstOrDefault(x => x.PostId == postId && x.TagId == tagId);
-        repository!.DeletePostTag(postTag!);
+        if(postTag!=default)
+            repository.DeletePostTag(postTag!);
         return RedirectToAction("UpdatePost", "Post", new {id = postId});
     }
+
+    public IActionResult RemoveTag(string id)
+    {
+        var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+        var tag = repository!.GetTagById(id);
+        repository.TagRemove(tag);
+        return RedirectToAction("GetAllTag", "Tag");
+    }
     /// <summary>
-    /// Получить все тэги
+    /// Получить все Теги
     /// </summary>
     /// <returns></returns>
     [HttpGet]
     public IActionResult GetAllTag()
     {
+        if (!User.IsInRole("moderator")) return RedirectToAction("Forbidden", "Error");
         var model = GetAll();
-        return View((IEnumerable<GetTagViewModel>)model);
+        return View(model);
     }
     /// <summary>
-    /// Получить тэг по ID
+    /// Получить Тег по ID
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

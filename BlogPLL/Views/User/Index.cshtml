@@ -1,43 +1,71 @@
-﻿@model IEnumerable<BlogDAL.Models.User>
+﻿@model IEnumerable<BlogBLL.ViewModels.User.UserRolesViewModel>
 
 @{
-    ViewBag.Title = "Список пользователей";
+    ViewData["Title"] = "Список пользователей";
     Layout = "../Admin/_Layout";
 }
 <div class="container">
-    <br/>
-    <table>
-        <tr>
-            <td colspan="2" style="text-align: right">
-                <a class="btn btn-outline-dark" asp-action="Create">Добавить пользователя</a>
-            </td>
-        </tr>
-        <tr><th>Email</th><th>Действия</th></tr>
 
+    <div class="row">
+        <div class="col-10">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+        <div class="col-2">
+            <a asp-action="Create">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                    <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                </svg>Добавить пользователя
+            </a>
+        </div>
+    </div>
+    <hr/>
+    <div class="card-deck">
         @foreach (var user in Model)
         {
-            if (!string.Equals(user.UserName, "admin"))
+            if (!string.Equals(user.User!.UserName, "admin"))
             {
-                <tr>
-                    <td style="text-align: left">@user.Email</td>
-                    <td>
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@user.User.FirstName @user.User.MiddleName @user.User.LastName</h5>
+                        <p class="card-text">
+                            Email:&ensp;@user.User.Email<br>
+                            Tel:&ensp;@user.User.PhoneNumber<br/>
+                            Дата рождения:&ensp;@user.User.BirthDate.ToString()!.Split(" ")[0]<br/>
+                        </p>
+                        <div class="text-right">
+                            @foreach (var r in user.Roles!)
+                            {
+                                <small class="badge bg-info">@r</small>
+                            }
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
                         <div class="row">
-                            <div>
-                                <a class="btn btn-sm btn-primary" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                            <div class="col-6">
+                                <a asp-controller="User" asp-action="Edit" asp-route-id="@user.User.Id">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+                                        <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086z"/>
+                                    </svg>
+                                </a><small>Изменить</small>
                             </div>
-                            <div>
-                                <form asp-action="Delete" asp-route-id="@user.Id" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
+                            <div class="col-6">
+                                <form class="hide-submit" asp-action="Delete" asp-route-id="@user.User.Id" method="post">
+                                    <label>
+                                        <input type="submit" style="display: none"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                        </svg>
+                                        <small>Удалить</small>
+                                    </label>
                                 </form>
                             </div>
                         </div>
-
-
-                    </td>
-                </tr>
+                    </div>
+                </div>
+                }
             }
-        }
-    </table>
+        </div>
 </div>

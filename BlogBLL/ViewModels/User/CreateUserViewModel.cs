@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogBLL.ViewModels.Account
+namespace BlogBLL.ViewModels.User
 {
     public class CreateUserViewModel
     {

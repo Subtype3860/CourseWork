@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BlogDAL.Models;
 
 namespace BlogBLL.ViewModels.Role
 {
@@ -6,10 +6,10 @@ namespace BlogBLL.ViewModels.Role
     {
         public string UserId { get; set; }
         public string UserEmail { get; set; }
-        public List<IdentityRole> AllRoles { get; set; }
+        public List<AppRole> AllRoles { get; set; }
         public IList<string> UserRole { get; set; }
 
-        public ChangeRoleViewModel(string userId, string userEmail, List<IdentityRole> allRoles, IList<string> userRole)
+        public ChangeRoleViewModel(string userId, string userEmail, List<AppRole> allRoles, IList<string> userRole)
         {
             UserId = userId;
             UserEmail = userEmail;

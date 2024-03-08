@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogBLL.Ext;
 using BlogBLL.ViewModels.Account;
+using BlogBLL.ViewModels.User;
 using BlogDAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,13 +12,13 @@ public class AccountManagerController : Controller
 {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly IMapper _mapper;
         public AccountManagerController(
             UserManager<User> userManager, 
             SignInManager<User> signInManager, 
             IMapper mapper, 
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,7 +45,7 @@ public class AccountManagerController : Controller
                 //Пользователь, роль "user"
                 var userId = await _userManager.FindByEmailAsync(user.Email!);
                 //создаём роль
-                await _roleManager.CreateAsync(new IdentityRole("user"));
+                await _roleManager.CreateAsync(new AppRole{Name = "user"});
                 //присваеваем роль "user" пользователю
                 await AddRoleUser(userId!.Id, new List<string> { "user" });
 
@@ -71,11 +72,10 @@ public class AccountManagerController : Controller
                 var result = await _userManager.CreateAsync(user, "admin_pass");
                 if (result.Succeeded)
                 {
-                    //await _signInManager.SignInAsync(user, false);
                     var listRole = new[] { "admin", "user", "moderator" };
                     foreach (var s in listRole)
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(s));
+                        await _roleManager.CreateAsync(new AppRole{Name = s});
                     }
 
                     var admin = await _userManager.FindByEmailAsync(user.Email);

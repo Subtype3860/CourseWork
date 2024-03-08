@@ -12,5 +12,6 @@ public class GetPostViewModel
     public virtual IEnumerable<PostTag>? PostTags { get; set; }
     public virtual IEnumerable<Remark>? Remarks { get; set; }
     public bool Log { get; set; }
-    public string LoUserId { get; set; }
+    public string? LoUserId { get; set; }
+    public int Look { get; set; }
 }

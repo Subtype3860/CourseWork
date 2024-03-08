@@ -2,6 +2,6 @@
 
 public class EditTagViewModel
 {
-    public List<BlogDAL.Models.Tag>? Tags { get; set; }
-    public string? PostId { get; set; }
+    public string? Id { get; set; }
+    public string? Stick { get; set; }
 }

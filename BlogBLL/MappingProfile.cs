@@ -3,6 +3,7 @@ using BlogBLL.ViewModels.Account;
 using BlogBLL.ViewModels.Comment;
 using BlogBLL.ViewModels.Post;
 using BlogBLL.ViewModels.Tag;
+using BlogBLL.ViewModels.User;
 using BlogDAL.Models;
 
 namespace BlogBLL;
@@ -71,5 +72,7 @@ public class MappingProfile : Profile
         //MappingTag
         CreateMap<AddTagViewModel, Tag>();
         CreateMap<Tag, AddTagViewModel>();
+        CreateMap<Tag, EditTagViewModel>();
+        CreateMap<EditTagViewModel, Tag>();
     }
 }

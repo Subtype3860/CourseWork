@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BlogDAL.Models;
 
-namespace BlogBLL.ViewModels.Account
+namespace BlogBLL.ViewModels.User
 {
     public class UserEditViewModel
     {
@@ -51,5 +52,7 @@ namespace BlogBLL.ViewModels.Account
         [DataType(DataType.Text)]
         [Display(Name = "О себе", Prompt = "Введите данные о себе")]
         public string? About { get; set; }
+        public List<AppRole>? AppRoles { get; set; }
+        public IList<string>? UserRole { get; set; }
     }
 }

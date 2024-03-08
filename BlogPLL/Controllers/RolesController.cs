@@ -9,22 +9,20 @@ namespace BlogPLL.Controllers
     [Authorize(Roles= "admin")]
     public class RolesController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<User> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        private readonly RoleManager<AppRole> _roleManager;
+        public RolesController(RoleManager<AppRole> roleManager)
         {
             _roleManager = roleManager;
-            _userManager = userManager;
         }
         // GET
         public IActionResult Index() => View(_roleManager.Roles.ToList());
         public IActionResult Create() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Create(string name)
+        public async Task<IActionResult> Create(AppRole role)
         {
-            if (string.IsNullOrEmpty(name)) return View(name);
-            var result = await _roleManager.CreateAsync(new IdentityRole(name));
+            if (string.IsNullOrEmpty(role.Name)) return View(role.Name);
+            var result = await _roleManager.CreateAsync(new AppRole{Name = role.Name, About = role.About});
             if (result.Succeeded)
             {
                 return RedirectToAction("Index");
@@ -33,7 +31,18 @@ namespace BlogPLL.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return View(name);
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditRoles(EditAppRoleViewModel model) => View(model);
+
+        [HttpPost]
+        public async Task<IActionResult> RolesEdit(EditAppRoleViewModel model)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+            await _roleManager.CreateAsync(model);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -42,46 +51,6 @@ namespace BlogPLL.Controllers
             var role = await _roleManager.FindByIdAsync(id);
             if (role != null) await _roleManager.DeleteAsync(role);
             return RedirectToAction("Index");
-        }
-        [HttpGet]
-        public IActionResult UserList() => View(_userManager.Users.ToList());
-
-        [HttpGet]
-		public async Task<IActionResult> Edit(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user!=null)
-            {
-                var userRole = await _userManager.GetRolesAsync(user);
-                var allRole =  _roleManager.Roles.ToList();
-                var model = new ChangeRoleViewModel(user.Id, user.Email!, allRole, userRole);
-                return View(model);
-            }
-            return NotFound();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Edit(string userId, List<string> roles)
-        {
-            // получаем пользователя
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                // получем список ролей пользователя
-                var userRoles = await _userManager.GetRolesAsync(user);
-                // получаем список ролей, которые были добавлены
-                var addedRoles = roles.Except(userRoles);
-                // получаем роли, которые были удалены
-                var removedRoles = userRoles.Except(roles);
-
-                await _userManager.AddToRolesAsync(user, addedRoles);
-
-                await _userManager.RemoveFromRolesAsync(user, removedRoles);
-
-                return RedirectToAction("UserList");
-            }
-
-            return NotFound();
-
         }
 
     }

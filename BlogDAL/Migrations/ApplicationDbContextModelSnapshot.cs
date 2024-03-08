@@ -17,6 +17,35 @@ namespace BlogDAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
+            modelBuilder.Entity("BlogDAL.Models.AppRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("About")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("BlogDAL.Models.Post", b =>
                 {
                     b.Property<string>("Id")
@@ -30,6 +59,9 @@ namespace BlogDAL.Migrations
 
                     b.Property<string>("Heading")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Look")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -164,9 +196,6 @@ namespace BlogDAL.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -180,35 +209,7 @@ namespace BlogDAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -344,11 +345,11 @@ namespace BlogDAL.Migrations
             modelBuilder.Entity("BlogDAL.Models.Remark", b =>
                 {
                     b.HasOne("BlogDAL.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("Remarks")
                         .HasForeignKey("PostId");
 
                     b.HasOne("BlogDAL.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Remarks")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Post");
@@ -356,16 +357,9 @@ namespace BlogDAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BlogDAL.Models.User", b =>
-                {
-                    b.HasOne("BlogDAL.Models.User", null)
-                        .WithMany("Users")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("BlogDAL.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -392,7 +386,7 @@ namespace BlogDAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("BlogDAL.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -417,6 +411,8 @@ namespace BlogDAL.Migrations
             modelBuilder.Entity("BlogDAL.Models.Post", b =>
                 {
                     b.Navigation("PostTags");
+
+                    b.Navigation("Remarks");
                 });
 
             modelBuilder.Entity("BlogDAL.Models.Tag", b =>
@@ -426,7 +422,7 @@ namespace BlogDAL.Migrations
 
             modelBuilder.Entity("BlogDAL.Models.User", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Remarks");
                 });
 #pragma warning restore 612, 618
         }
