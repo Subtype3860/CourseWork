@@ -1,4 +1,4 @@
-﻿using BlogBLL.Repository;
+﻿using BlogDAL.Repository;
 
 namespace BlogBLL.UnitOfWork
 {

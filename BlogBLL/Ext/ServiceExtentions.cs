@@ -1,4 +1,4 @@
-﻿using BlogBLL.Repository;
+﻿using BlogDAL.Repository;
 using BlogBLL.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 

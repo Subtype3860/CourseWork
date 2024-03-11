@@ -1,16 +1,12 @@
-﻿using AutoMapper;
-using BlogDAL;
-using BlogDAL.Models;
+﻿using BlogDAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogBLL.Repository;
+namespace BlogDAL.Repository;
 
 public class PostRepository : Repository<Post>
 {
-    private readonly IMapper _mapper;
-    public PostRepository(ApplicationDbContext db, IMapper mapper) : base(db)
+    public PostRepository(ApplicationDbContext db) : base(db)
     {
-        _mapper = mapper;
     }
     public IEnumerable<Post> GetAllPosts()
     {

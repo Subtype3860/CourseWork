@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using BlogBLL.Repository;
+using BlogDAL.Repository;
 using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Tag;
 using BlogDAL.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogPLL.Controllers;
@@ -12,13 +11,11 @@ public class TagController : Controller
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly UserManager<User> _userManager;
 
-    public TagController(IMapper mapper, IUnitOfWork unitOfWork, UserManager<User> userManager)
+    public TagController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _userManager = userManager;
     }
 
     [HttpGet]
@@ -84,7 +81,7 @@ public class TagController : Controller
         var repository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
         var postTag = repository!.GetAllPostTags().FirstOrDefault(x => x.PostId == postId && x.TagId == tagId);
         if(postTag!=default)
-            repository.DeletePostTag(postTag!);
+            repository.DeletePostTag(postTag);
         return RedirectToAction("UpdatePost", "Post", new {id = postId});
     }
 

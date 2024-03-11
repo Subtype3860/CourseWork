@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
-using AutoMapper;
-using BlogBLL.Repository;
+using BlogDAL.Repository;
 using BlogBLL.UnitOfWork;
-using BlogBLL.ViewModels.Post;
 using Microsoft.AspNetCore.Mvc;
 using BlogDAL.Models;
 
@@ -12,12 +10,10 @@ namespace BlogPLL.Controllers
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public HomeController(IUnitOfWork unitOfWork, IMapper mapper)
+        public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult Index()

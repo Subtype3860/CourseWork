@@ -1,8 +1,7 @@
-﻿using BlogDAL;
-using BlogDAL.Models;
+﻿using BlogDAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogBLL.Repository;
+namespace BlogDAL.Repository;
 
 public class PostTagRepository : Repository<PostTag>
 {

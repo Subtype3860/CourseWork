@@ -1,6 +1,6 @@
 ﻿using BlogDAL.Models;
 
-namespace BlogBLL.Repository
+namespace BlogDAL.Repository
 {
     public interface IRepository<T> where T : class 
     {

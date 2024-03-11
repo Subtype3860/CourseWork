@@ -5,7 +5,7 @@ using BlogDAL;
 using BlogDAL.Models;
 using BlogBLL;
 using BlogBLL.Ext;
-using BlogBLL.Repository;
+using BlogDAL.Repository;
 
 namespace BlogPLL
 {

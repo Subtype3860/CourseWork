@@ -1,8 +1,6 @@
-﻿using BlogDAL;
-using BlogDAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace BlogBLL.Repository
+namespace BlogDAL.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {

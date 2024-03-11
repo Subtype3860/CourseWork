@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BlogBLL.Repository;
+using BlogDAL.Repository;
 using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Comment;
 using BlogDAL.Models;
