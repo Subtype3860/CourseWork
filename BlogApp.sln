@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogDAL", "BlogDAL\BlogDAL.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogBLL", "BlogBLL\BlogBLL.csproj", "{99594A3F-1D34-4A15-B34E-5CC2FE524554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApi", "BlogApi\BlogApi.csproj", "{9C11DA32-77A5-4CB9-8D0B-204999A9AC3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{99594A3F-1D34-4A15-B34E-5CC2FE524554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99594A3F-1D34-4A15-B34E-5CC2FE524554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99594A3F-1D34-4A15-B34E-5CC2FE524554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C11DA32-77A5-4CB9-8D0B-204999A9AC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C11DA32-77A5-4CB9-8D0B-204999A9AC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C11DA32-77A5-4CB9-8D0B-204999A9AC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C11DA32-77A5-4CB9-8D0B-204999A9AC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

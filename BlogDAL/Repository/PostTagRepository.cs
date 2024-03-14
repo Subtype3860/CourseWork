@@ -5,7 +5,7 @@ namespace BlogDAL.Repository;
 
 public class PostTagRepository : Repository<PostTag>
 {
-    public PostTagRepository(ApplicationDbContext db) : base(db)
+    public PostTagRepository(AppDbContext db) : base(db)
     {
     }
     public void AddPostTag(PostTag postTag)

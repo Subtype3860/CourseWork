@@ -5,7 +5,7 @@ namespace BlogDAL.Repository;
 
 public class RemarkRepository : Repository<Remark>
 {
-    public RemarkRepository(ApplicationDbContext db) : base(db)
+    public RemarkRepository(AppDbContext db) : base(db)
     {
     }
 

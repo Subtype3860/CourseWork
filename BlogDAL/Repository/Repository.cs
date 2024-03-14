@@ -8,7 +8,7 @@ namespace BlogDAL.Repository
 
         public DbSet<T> Set { get; private set; }
 
-        public Repository(ApplicationDbContext db)
+        public Repository(AppDbContext db)
         {
             _db = db;
             var set = _db.Set<T>();

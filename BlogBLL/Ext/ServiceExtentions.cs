@@ -13,11 +13,11 @@ namespace BlogBLL.Ext
             return services;
         }
 
-        public static IServiceCollection AddCustomRepository<TEntity, IRepository>(this IServiceCollection services)
+        public static IServiceCollection AddCustomRepository<TEntity, TRepository>(this IServiceCollection services)
                  where TEntity : class
-                 where IRepository : class, IRepository<TEntity>
+                 where TRepository : class, IRepository<TEntity>
         {
-            services.AddScoped<IRepository<TEntity>, IRepository>();
+            services.AddScoped<IRepository<TEntity>, TRepository>();
 
             return services;
         }

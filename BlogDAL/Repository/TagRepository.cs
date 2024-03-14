@@ -5,7 +5,7 @@ namespace BlogDAL.Repository;
 
 public class TagRepository : Repository<Tag>
 {
-    public TagRepository(ApplicationDbContext db) : base(db)
+    public TagRepository(AppDbContext db) : base(db)
     {
     }
 

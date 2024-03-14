@@ -5,7 +5,7 @@ namespace BlogDAL.Repository;
 
 public class PostRepository : Repository<Post>
 {
-    public PostRepository(ApplicationDbContext db) : base(db)
+    public PostRepository(AppDbContext db) : base(db)
     {
     }
     public IEnumerable<Post> GetAllPosts()

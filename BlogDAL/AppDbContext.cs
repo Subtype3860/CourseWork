@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogDAL
 {
-    public class ApplicationDbContext : IdentityDbContext<User, AppRole, string>
+    public class AppDbContext : IdentityDbContext<User, AppRole, string>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
             Database.Migrate();

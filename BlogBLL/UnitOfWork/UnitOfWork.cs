@@ -6,11 +6,11 @@ namespace BlogBLL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ApplicationDbContext _db;
+        private AppDbContext _db;
 
         private Dictionary<Type, object>? _repositories;
 
-        public UnitOfWork(ApplicationDbContext db)
+        public UnitOfWork(AppDbContext db)
         {
             _db = db;
         }

@@ -23,7 +23,7 @@ namespace BlogPLL
             var mapper = mapperConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
             builder.Services
-                .AddDbContext<ApplicationDbContext>(options => 
+                .AddDbContext<AppDbContext>(options => 
                 {
                     options.UseSqlite(connection, b => b.MigrationsAssembly("BlogDAL"));
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -41,13 +41,11 @@ namespace BlogPLL
                        opts.Password.RequireUppercase = false;
                        opts.Password.RequireDigit = false;
                    })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();   
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-            // Add services to the container.
-            //builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

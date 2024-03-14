@@ -74,5 +74,13 @@ public class MappingProfile : Profile
         CreateMap<Tag, AddTagViewModel>();
         CreateMap<Tag, EditTagViewModel>();
         CreateMap<EditTagViewModel, Tag>();
+        
+        //MappingPostApi
+        CreateMap<Post, GetAllPostWebApi>();
+        CreateMap<GetAllPostWebApi, Post>();
+        CreateMap<Post, AddPostWebApi>();
+        CreateMap<AddPostWebApi, Post>();
+        CreateMap<Post, EditPostWebApi>();
+        CreateMap<EditPostWebApi, Post>();
     }
 }
