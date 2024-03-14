@@ -55,6 +55,7 @@ public class PostController : Controller
 
         //Присвоение тегов
         var postTagRepository = _unitOfWork.GetRepository<PostTag>() as PostTagRepository;
+        if(apvm.TagPostUser == null) return RedirectToAction("Index", "Home");
         foreach (var pt in apvm.TagPostUser!)
         {
             postTagRepository!.AddPostTag(new PostTag{PostId = post.Id, TagId = pt});

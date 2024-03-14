@@ -99,6 +99,7 @@ public class TagController : Controller
     [HttpGet]
     public IActionResult GetAllTag()
     {
+        var ddd = User.Claims;
         if (!User.IsInRole("moderator")) return RedirectToAction("Forbidden", "Error");
         var model = GetAll();
         return View(model);

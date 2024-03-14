@@ -23,7 +23,7 @@
     <div class="card-deck">
         @foreach (var user in Model)
         {
-            if (!string.Equals(user.User!.UserName, "admin"))
+            if (!string.Equals(user.User!.UserName, "admin_"))
             {
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
                     <div class="card-body">
