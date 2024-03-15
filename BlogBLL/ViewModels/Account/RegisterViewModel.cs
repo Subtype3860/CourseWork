@@ -14,6 +14,7 @@ namespace BlogBLL.ViewModels.Account
         public string? LastName { get; set; }
 
         [Required(ErrorMessage = "Неуказан Email")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Некорректный адрес")]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
