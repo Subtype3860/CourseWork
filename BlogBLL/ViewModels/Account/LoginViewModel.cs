@@ -5,12 +5,12 @@ namespace BlogBLL.ViewModels.Account;
 public class LoginViewModel
 {
     [Required]
-    [Display(Name = "Login")]
+    [Display(Name = "Login", Prompt = "UserName, Email")]
     public string? UserName { get; set; }
 
     [Required]
     [DataType(DataType.Password)]
-    [Display(Name = "Пароль", Prompt = "[UserName, Email]")]
+    [Display(Name = "Пароль", Prompt = "Password")]
     public string? Password { get; set; }
 
     [Display(Name = "Запомнить?")]

@@ -42,13 +42,16 @@ public class PostExtentions
                 repository.DeletePostTag(new PostTag{PostId = model.PostId, TagId = tag.TagId});
             }
         }
-
-        foreach (var tag in model.TagId!)
+        if (model.TagId != null)
         {
-            if (!tagPost.Contains(tag))
+            foreach (var tag in model.TagId!)
             {
-                repository.AddPostTag(new PostTag{PostId = model.PostId, TagId = tag});
+                if (!tagPost.Contains(tag))
+                {
+                    repository.AddPostTag(new PostTag { PostId = model.PostId, TagId = tag });
+                }
             }
         }
+
     }
 }
