@@ -6,10 +6,7 @@ using BlogDAL.Models;
 using BlogBLL;
 using BlogBLL.Ext;
 using BlogDAL.Repository;
-using NLog;
 using NLog.Extensions.Logging;
-using NLog.Web;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace BlogPLL
 {
@@ -19,6 +16,8 @@ namespace BlogPLL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.ClearProviders();
+            builder.Logging.AddNLog("NLog.config");
 
             //БД
             var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -27,10 +26,6 @@ namespace BlogPLL
                 v.AddProfile(new MappingProfile());
             });
             var mapper = mapperConfig.CreateMapper();
-
-            builder.Logging.ClearProviders();
-            builder.Logging.SetMinimumLevel(LogLevel.Trace);
-            builder.Host.UseNLog();
 
             builder.Services.AddSingleton(mapper);
             builder.Services
