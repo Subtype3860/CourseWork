@@ -14,12 +14,15 @@ public class PostController : Controller
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
+    private readonly ILogger<PostController> _logger;
 
-    public PostController(IMapper mapper, IUnitOfWork unitOfWork, UserManager<User> userManager)
+    public PostController(IMapper mapper, IUnitOfWork unitOfWork, UserManager<User> userManager, ILogger<PostController> logger)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _userManager = userManager;
+        _logger = logger;
+        logger.LogInformation("Posts");
     }
     [HttpGet]
     public async Task<IActionResult> AddPost()

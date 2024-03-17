@@ -11,11 +11,13 @@ public class TagController : Controller
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<TagController> _logger;
 
-    public TagController(IMapper mapper, IUnitOfWork unitOfWork)
+    public TagController(IMapper mapper, IUnitOfWork unitOfWork, ILogger<TagController> logger)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     [HttpGet]

@@ -14,12 +14,15 @@ public class CommentController : Controller
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
+    private readonly ILogger<CommentController> _logger;
 
-    public CommentController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+    public CommentController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, ILogger<CommentController> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _userManager = userManager;
+        _logger = logger;
+        logger.LogInformation("Comment");
     }
     [HttpGet]
     [Authorize]

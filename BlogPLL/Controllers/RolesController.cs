@@ -10,9 +10,12 @@ namespace BlogPLL.Controllers
     public class RolesController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
-        public RolesController(RoleManager<AppRole> roleManager)
+        private readonly ILogger<RolesController> _logger;
+        public RolesController(RoleManager<AppRole> roleManager, ILogger<RolesController> logger)
         {
             _roleManager = roleManager;
+            _logger = logger;
+            logger.LogInformation("Roles");
         }
         // GET
         public IActionResult Index() => View(_roleManager.Roles.ToList());

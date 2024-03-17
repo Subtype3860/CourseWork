@@ -14,12 +14,16 @@ namespace BlogPLL.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IMapper _mapper;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserManager<User> userManager, IMapper mapper, RoleManager<AppRole> roleManager)
+        public UserController(UserManager<User> userManager, 
+            IMapper mapper, RoleManager<AppRole> roleManager, ILogger<UserController> logger)
         {
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
+            _logger = logger;
+            logger.LogInformation("User");
         }
 
         [HttpGet]

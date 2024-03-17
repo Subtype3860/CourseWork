@@ -10,12 +10,13 @@ namespace BlogPLL.Controllers
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IUnitOfWork unitOfWork, ILogger logger)
+        public HomeController(IUnitOfWork unitOfWork, ILogger<HomeController> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            logger.LogInformation("GetPosts");
         }
         [HttpGet]
         public IActionResult Index()
