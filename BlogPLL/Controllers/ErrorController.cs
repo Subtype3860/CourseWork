@@ -1,25 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogPLL.Controllers;
 
 public class ErrorController : Controller
 {
-    // GET
-    public IActionResult Forbidden()
+    [Route("Error/{statusCode}")]
+    public IActionResult HttpStatusCodeHandler(int statusCode)
     {
-        return View();
+        var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+        switch(statusCode)
+        {
+            case 404:
+                ViewBag.Path = statusCodeResult!.OriginalPath;
+                return RedirectToAction("ErrorNotPage");
+        }
+        return View("");
     }
 
-    public IActionResult Resource()
-    {
-        return View();
-    }
+    public IActionResult ErrorNotPage() => View();
 
-    public IActionResult GoWrong()
-    {
-        return View();
-    }
-    
-    
-    
+
+
+
 }
