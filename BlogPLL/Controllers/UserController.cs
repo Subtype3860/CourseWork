@@ -70,14 +70,9 @@ namespace BlogPLL.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return RedirectToAction("Resource", "Error");
-            }
-
             var model = _mapper.Map<UserEditViewModel>(user);
             model.AppRoles = _roleManager.Roles.ToList();
-            model.UserRole = await _userManager.GetRolesAsync(user);
+            if (user != null) model.UserRole = await _userManager.GetRolesAsync(user);
             return View(model);
         }
 
@@ -139,5 +134,8 @@ namespace BlogPLL.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Route("/Home/Error")]
+        public IActionResult HandleError() =>
+            Problem();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogPLL.Controllers;
@@ -6,19 +7,13 @@ namespace BlogPLL.Controllers;
 public class ErrorController : Controller
 {
     [Route("Error/{statusCode}")]
+    [AllowAnonymous]
     public IActionResult HttpStatusCodeHandler(int statusCode)
     {
-        var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-        switch(statusCode)
-        {
-            case 404:
-                ViewBag.Path = statusCodeResult!.OriginalPath;
-                return RedirectToAction("ErrorNotPage");
-        }
-        return View("");
+        //var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+        //ViewBag.Path = statusCodeResult!.OriginalQueryString;
+        return View(statusCode);
     }
-
-    public IActionResult ErrorNotPage() => View();
 
 
 

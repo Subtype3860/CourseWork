@@ -4,6 +4,8 @@ using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Tag;
 using BlogDAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogPLL.Controllers;
 
@@ -45,7 +47,7 @@ public class TagController : Controller
     [HttpGet]
     public IActionResult UpdateTag(string tagId )
     {
-        if (string.IsNullOrEmpty(tagId)) return RedirectToAction("GoWrong", "Error");
+        // if (string.IsNullOrEmpty(tagId)) return RedirectToAction("GoWrong", "Error");
         var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
         var model = repository!.GetTagById(tagId);
         var tag = _mapper.Map<EditTagViewModel>(model);
@@ -101,8 +103,11 @@ public class TagController : Controller
     [HttpGet]
     public IActionResult GetAllTag()
     {
-        var ddd = User.Claims;
-        if (!User.IsInRole("moderator")) return RedirectToAction("Forbidden", "Error");
+        var user = User.Claims;
+        if (user.ToList().Count <= 0 || !User.IsInRole("moderator"))
+        {
+            return RedirectToAction("HttpStatusCodeHandler", "Error", new { statusCode = 403});
+        }
         var model = GetAll();
         return View(model);
     }

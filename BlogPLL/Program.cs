@@ -57,10 +57,9 @@ namespace BlogPLL
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("Error");
-                
+
             }
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
             app.UseHttpsRedirection();
             const string cachePeriod = "0";
             app.UseStaticFiles(new StaticFileOptions
