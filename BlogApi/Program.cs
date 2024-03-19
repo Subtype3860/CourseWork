@@ -10,8 +10,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class Program
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -21,10 +28,30 @@ namespace BlogApi
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c => 
-            { 
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogApi", Version = "v1" }); 
-            });
+            builder.Services.AddSwaggerGen(
+                options =>
+                {
+                    var basePath = AppContext.BaseDirectory;
+
+                    var xmlPath = Path.Combine(basePath, "BlogApi.xml");
+                    options.IncludeXmlComments(xmlPath);
+                    options.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Blog API",
+                        Description = "Пример ASP .NET Core Web API",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Пример контакта",
+                            Url = new Uri("https://example.com/contact")
+                        },
+                        License = new OpenApiLicense
+                        {
+                            Name = "Пример лицензии",
+                            Url = new Uri("https://example.com/license")
+                        }
+                    });
+                });
 
             var mapperConfig = new MapperConfiguration((v) =>
             {
