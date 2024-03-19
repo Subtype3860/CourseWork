@@ -8,15 +8,18 @@
         @switch (Model)
         {
             case 404:
-                <partial name="Error404" />
+                <partial name="Error404"/>
                 break;
             case 403:
-                <partial name="Error403" />
+                <partial name="Error403"/>
+                break;
+            case 400:
+                <partial name="Error400"/>
                 break;
             default:
-                <partial name="Error400" />
+                <partial name="ErrorOops"/>
                 break;
         }
     </div>
-    @* <div>@ViewBag.Path</div> *@
+    <div>@ViewBag.Path</div>
 </div>

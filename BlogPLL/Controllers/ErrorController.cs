@@ -10,8 +10,9 @@ public class ErrorController : Controller
     [AllowAnonymous]
     public IActionResult HttpStatusCodeHandler(int statusCode)
     {
-        //var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-        //ViewBag.Path = statusCodeResult!.OriginalQueryString;
+        var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+        if(statusCodeResult != null)
+            ViewBag.Path = statusCodeResult.OriginalQueryString!;
         return View(statusCode);
     }
 

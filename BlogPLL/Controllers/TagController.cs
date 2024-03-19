@@ -4,8 +4,6 @@ using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.Tag;
 using BlogDAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 namespace BlogPLL.Controllers;
 
