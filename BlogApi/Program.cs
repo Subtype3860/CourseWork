@@ -35,22 +35,23 @@ namespace BlogApi
 
                     var xmlPath = Path.Combine(basePath, "BlogApi.xml");
                     options.IncludeXmlComments(xmlPath);
-                    options.SwaggerDoc("v1", new OpenApiInfo
-                    {
-                        Version = "v1",
-                        Title = "Blog API",
-                        Description = "Ïðèìåð ASP .NET Core Web API",
-                        Contact = new OpenApiContact
+                    options.SwaggerDoc(
+                        "v1", new OpenApiInfo
                         {
-                            Name = "Ïðèìåð êîíòàêòà",
-                            Url = new Uri("https://example.com/contact")
-                        },
-                        License = new OpenApiLicense
-                        {
-                            Name = "Ïðèìåð ëèöåíçèè",
-                            Url = new Uri("https://example.com/license")
-                        }
-                    });
+                            Version = "v1",
+                            Title = "Shop API",
+                            Description = "ÐŸÑ€Ð¸Ð¼ÐµÑ€ ASP .NET Core Web API",
+                            Contact = new OpenApiContact
+                            {
+                                Name = "ÐŸÑ€Ð¸Ð¼ÐµÑ€ ÐºÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ð°",
+                                Url = new Uri("https://example.com/contact")
+                            },
+                            License = new OpenApiLicense
+                            {
+                                Name = "ÐŸÑ€Ð¸Ð¼ÐµÑ€ Ð»Ð¸Ñ†ÐµÐ½Ð·Ð¸Ð¸",
+                                Url = new Uri("https://example.com/license")
+                            }
+                        });
                 });
 
             var mapperConfig = new MapperConfiguration((v) =>
@@ -68,7 +69,10 @@ namespace BlogApi
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 })
                 .AddUnitOfWork()
-                .AddCustomRepository<Post, PostRepository>();
+                .AddCustomRepository<Post, PostRepository>()
+                .AddCustomRepository<Tag, TagRepository>()
+                .AddCustomRepository<Remark, RemarkRepository>()
+                .AddCustomRepository<PostTag, PostTagRepository>();
 
             builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
                 .AddCookie("Cookies", options =>

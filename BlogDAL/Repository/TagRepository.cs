@@ -34,10 +34,4 @@ public class TagRepository : Repository<Tag>
     {
         return Get(id);
     }
-
-    public Tag GetTagByName(string name)
-    {
-        var tag = Set.FirstOrDefault(x => x.Stick == name);
-        return tag!;
-    }
 }

@@ -3,10 +3,18 @@ using BlogDAL.Models;
 using BlogDAL.Repository;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using BlogBLL.Ext;
 using BlogBLL.ViewModels.Post;
 
 namespace BlogApi.Controllers;
-
+/// <summary>
+/// Controller PostApi реализует:
+///     Получение всех статей;
+///     Получение статьи по ID;
+///     Добавление статьи;
+///     Обновление статьи;
+///     Удаление статьи.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class PostApiController : ControllerBase
@@ -14,11 +22,22 @@ public class PostApiController : ControllerBase
     private readonly IUnitOfWork _db;
     private readonly IMapper _mapper;
 
+    #region Designer
+
+    /// <summary>
+    /// Конструктор PostApiController
+    /// </summary>
+    /// <param name="db">IUnitOfWork</param>
+    /// <param name="mapper">IMapper</param>
     public PostApiController(IUnitOfWork db, IMapper mapper)
     {
         _db = db;
         _mapper = mapper;
     }
+
+    #endregion
+
+    #region GetAllPost HttpGet
 
     /// <summary>
     /// Получение всех статей
@@ -26,12 +45,20 @@ public class PostApiController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("/Get")]
-    public IEnumerable<Post> Get()
+    public List<GetAllPostWebApi> Get()
     {
         var repository = _db.GetRepository<Post>() as PostRepository;
         var list = repository!.GetAllPosts();
-        return list;
+        var enumerable = list as Post[] ?? list.ToArray();
+        var model = new PostExtentions(null).GetAllPostExt(enumerable);
+        return model;
     }
+    
+
+    #endregion
+
+    #region GetPostById HttpGet
+
     /// <summary>
     /// Получение статьи по ID
     /// </summary>
@@ -46,6 +73,11 @@ public class PostApiController : ControllerBase
         var model = _mapper.Map<GetAllPostWebApi>(post);
         return model;
     }
+
+    #endregion
+    
+    #region AddPost HttpPost
+
     /// <summary>
     /// Добавление статьи
     /// </summary>
@@ -60,6 +92,11 @@ public class PostApiController : ControllerBase
         repository!.AddPost(model);
         return Ok();
     }
+
+    #endregion
+    
+    #region Update HttpPost
+
     /// <summary>
     /// Обновление статьи
     /// </summary>
@@ -74,6 +111,11 @@ public class PostApiController : ControllerBase
         repository!.PostUpdate(model);
         return Ok();
     }
+
+    #endregion
+    
+    #region Delete HttpPost
+
     /// <summary>
     /// Удаление статьи
     /// </summary>
@@ -88,16 +130,8 @@ public class PostApiController : ControllerBase
         repository.PostRemove(model);
         return Ok();
     }
-    /// <summary>
-    /// Gjkexbnmsdlfssmdbfgfsfd
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("/GetAllTag")]
-    public IEnumerable<Tag> GetAllTag()
-    {
-        var repository = _db.GetRepository<Tag>() as TagRepository;
-        var model = repository!.GetAllTags();
-        return model;
-    }
+
+    #endregion
+    
+
 }
