@@ -69,7 +69,7 @@ namespace BlogApi
                 })
                 .AddUnitOfWork()
                 .AddCustomRepository<Post, PostRepository>();
-            
+
             builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
                 .AddCookie("Cookies", options =>
                 {

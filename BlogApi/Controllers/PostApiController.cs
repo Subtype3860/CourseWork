@@ -88,4 +88,16 @@ public class PostApiController : ControllerBase
         repository.PostRemove(model);
         return Ok();
     }
+    /// <summary>
+    /// Gjkexbnmsdlfssmdbfgfsfd
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("/GetAllTag")]
+    public IEnumerable<Tag> GetAllTag()
+    {
+        var repository = _db.GetRepository<Tag>() as TagRepository;
+        var model = repository!.GetAllTags();
+        return model;
+    }
 }
