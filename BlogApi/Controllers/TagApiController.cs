@@ -65,7 +65,7 @@ namespace BlogApi.Controllers
         /// <param name="id">ID тега</param>
         /// <returns>Модель Tag</returns>
         [HttpGet]
-        [Route("/GetTagById")]
+        [Route("/GetTagById/{id}")]
         public GetTagByIdWebApi? GetTagById(string id)
         {
             if (ModelState.IsValid)
@@ -89,8 +89,8 @@ namespace BlogApi.Controllers
         /// <param name="id">ID статьи</param>
         /// <returns>Список тегов</returns>
         [HttpGet]
-        [Route("/GetTagByPostName")]
-        public List<GetAllTagWebApi> GetTagByPostName(string id)
+        [Route("/GetTagByPostId/{id}")]
+        public List<GetAllTagWebApi> GetTagByPostId(string id)
         {
             var repository = _db.GetRepository<Tag>() as TagRepository;
             var tags = repository!.GetAllTags();

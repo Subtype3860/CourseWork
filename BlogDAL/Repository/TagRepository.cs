@@ -12,7 +12,8 @@ public class TagRepository : Repository<Tag>
     public IEnumerable<Tag> GetAllTags()
     {
         return Set
-            .Include(x=>x.PostTags);
+            .Include(x=>x.PostTags)
+            .ThenInclude(x=>x.Post);
     }
 
     public void AddTag(Tag tag)
