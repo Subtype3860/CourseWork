@@ -1,12 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogBLL.UnitOfWork;
+using BlogDAL.Models;
+using BlogDAL.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApi.Controllers
 {
-    public class TagApiController : Controller
+    /// <summary>
+    /// Класс Тег
+    /// </summary>
+    [ApiController]
+    [Route("[controller]")]
+    public class TagApiController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly IUnitOfWork _unitOfWork;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        public TagApiController(IUnitOfWork unitOfWork)
         {
-            return View();
+            _unitOfWork = unitOfWork;
+        }
+
+        /// <summary>
+        /// Получение всех тегов
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[controller]/GetAllTag")]
+        public List<Tag> GetAllTag()
+        {
+            var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+            var model = repository!.GetAllTags();
+            return model.ToList();
         }
     }
 }
