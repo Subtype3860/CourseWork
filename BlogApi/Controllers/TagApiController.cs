@@ -93,9 +93,8 @@ namespace BlogApi.Controllers
         public List<GetAllTagWebApi> GetTagByPostId(string id)
         {
             var repository = _db.GetRepository<Tag>() as TagRepository;
-            var tags = repository!.GetAllTags();
-            var postTags = tags.Select(s=>s.PostTags.First(f=>f.Post!.Id == id)).Select(s=>s.Tag);
-            var model = new TagExtentions().GetTagToViewModel(postTags!);
+            var tags = repository!.GetAllTagsByPostId(id);
+            var model = new TagExtentions().GetTagToViewModel(tags);
             return model;
         }
 
