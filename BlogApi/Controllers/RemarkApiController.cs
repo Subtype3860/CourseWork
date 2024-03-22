@@ -120,6 +120,7 @@ public class RemarkApiController : ControllerBase
     public IActionResult RemoveRemark(string id)
     {
         var repository = _db.GetRepository<Remark>() as RemarkRepository;
+        repository!.RemoveComment(id);
         
         return Ok();
     }
