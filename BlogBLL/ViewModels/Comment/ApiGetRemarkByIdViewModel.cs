@@ -1,8 +1,6 @@
-﻿using BlogDAL.Models;
+﻿namespace BlogBLL.ViewModels.Comment;
 
-namespace BlogBLL.ViewModels.Comment;
-
-public class AddCommentViewModel
+public class ApiGetRemarkByIdViewModel
 {
     /// <summary>
     /// ID комментария

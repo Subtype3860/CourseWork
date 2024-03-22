@@ -107,7 +107,7 @@ public class PostController : Controller
             var listRemark = repositoryRemark!.GetCommentByPostId(id);
             foreach (var remark in listRemark)
             {
-                await Task.Run(() => repositoryRemark.RemoveComment(remark));
+                await Task.Run(() => repositoryRemark.RemoveComment(remark.Id));
             }
             //Удаление статьи
             var repositoryPost = _unitOfWork.GetRepository<Post>() as PostRepository;

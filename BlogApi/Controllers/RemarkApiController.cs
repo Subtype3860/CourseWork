@@ -49,4 +49,81 @@ public class RemarkApiController : ControllerBase
 
     #endregion
 
+    #region GetCommetById
+
+    /// <summary>
+    /// Получение комментария по ID
+    /// </summary>
+    /// <param name="id">ID комментария</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("/GetCommetById/{id}")]
+    public ApiGetRemarkByIdViewModel GetCommetById(string id)
+    {
+        var repository = _db.GetRepository<Remark>() as RemarkRepository;
+        var remark = repository!.GetRemarkById(id);
+        var model = _mapper.Map<ApiGetRemarkByIdViewModel>(remark);
+        return model;
+    }
+
+    #endregion
+
+    #region AddRemark
+
+    /// <summary>
+    /// Добавление коментария 
+    /// </summary>
+    /// <param name="model">Модель Remark</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("/AddRemark")]
+    public IActionResult AddRemark(ApiAddRemarkViewModel model)
+    {
+        if (!ModelState.IsValid) return NotFound();
+        var remark = _mapper.Map<Remark>(model);
+        var repository = _db.GetRepository<Remark>() as RemarkRepository;
+        repository!.AddComment(remark);
+        return Ok();
+    }
+
+    #endregion
+
+    #region UpdateRemark
+
+    /// <summary>
+    /// Обновление комментария
+    /// </summary>
+    /// <param name="model">Модель Remark</param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("/UpdareRemark")]
+    public IActionResult UpdateRemark(ApiUpdateRemarkViewModel model)
+    {
+        if (!ModelState.IsValid) return NotFound();
+        var remark = _mapper.Map<Remark>(model);
+        var repository = _db.GetRepository<Remark>() as RemarkRepository;
+        repository!.UpdateComment(remark);
+        return Ok();
+    }
+
+    #endregion
+
+    #region RemoveRemark
+
+    /// <summary>
+    /// Удаление комментария
+    /// </summary>
+    /// <param name="id">ID комментария</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("/RemoveRemark")]
+    public IActionResult RemoveRemark(string id)
+    {
+        var repository = _db.GetRepository<Remark>() as RemarkRepository;
+        
+        return Ok();
+    }
+
+    #endregion
+
 }

@@ -83,8 +83,7 @@ public class CommentController : Controller
     public IActionResult DeleteComment(string id)
     {
         var repository = _unitOfWork.GetRepository<Remark>() as RemarkRepository;
-        var model = repository!.GetRemarkById(id);
-        repository.RemoveComment(model);
+        repository!.RemoveComment(id);
         return RedirectToAction("Index", "Home");
     }
     [HttpGet]

@@ -100,7 +100,15 @@ public class MappingProfile : Profile
         CreateMap<EditPostWebApi, Post>();
 
         #endregion
-        
+
+        #region MappingCommitApi
+
+        CreateMap<Remark, ApiGetRemarkByIdViewModel>();
+        CreateMap<ApiAddRemarkViewModel, Remark>();
+        CreateMap<ApiUpdateRemarkViewModel, Remark>();
+
+        #endregion
+
 
     }
 }

@@ -42,8 +42,10 @@ public class RemarkRepository : Repository<Remark>
         Update(comment);
     }
 
-    public void RemoveComment(Remark comment)
+    public void RemoveComment(string id)
     {
-        Delete(comment);
+        var remark = Set.FirstOrDefault(x => x.Id == id);
+        if(remark != default)
+            Delete(remark);
     }
 }
