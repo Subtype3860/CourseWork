@@ -11,6 +11,8 @@ namespace BlogApi.Controllers;
 /// <summary>
 /// Класс для работы с комментариями
 /// </summary>
+[ApiController]
+[Route("[controller]")]
 public class RemarkApiController : ControllerBase
 {
     #region Designer

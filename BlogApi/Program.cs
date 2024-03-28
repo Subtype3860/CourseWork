@@ -6,6 +6,7 @@ using BlogBLL;
 using BlogBLL.Ext;
 using BlogDAL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace BlogApi
@@ -72,7 +73,10 @@ namespace BlogApi
                 .AddCustomRepository<Post, PostRepository>()
                 .AddCustomRepository<Tag, TagRepository>()
                 .AddCustomRepository<Remark, RemarkRepository>()
-                .AddCustomRepository<PostTag, PostTagRepository>();
+                .AddCustomRepository<PostTag, PostTagRepository>()
+                .AddIdentity<User, AppRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
                 .AddCookie("Cookies", options =>

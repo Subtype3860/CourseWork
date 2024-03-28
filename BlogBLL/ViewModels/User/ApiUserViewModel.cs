@@ -19,7 +19,7 @@ namespace BlogBLL.ViewModels.User
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         /// <summary>
         /// Электронный адрес
         /// </summary>

@@ -109,6 +109,12 @@ public class MappingProfile : Profile
 
         #endregion
 
+        #region MappingUserApi
+
+        CreateMap<User, ApiUserViewModel>();
+
+        #endregion
+
 
     }
 }
