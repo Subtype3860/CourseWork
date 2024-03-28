@@ -71,6 +71,9 @@ public class UserApiController : ControllerBase
     [HttpPost]
     [Route("/AddUser")]
     public IActionResult AddUser(User user)
+    {
+        return Ok();
+    }
 
     #endregion
 
