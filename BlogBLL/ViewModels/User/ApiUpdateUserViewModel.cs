@@ -1,7 +1,11 @@
 ﻿namespace BlogBLL.ViewModels.User;
 
-public class ApiAddUserViewModel
+public class ApiUpdateUserViewModel
 {
+    /// <summary>
+    /// ID пользователя
+    /// </summary>
+    public string Id { get; set; } = string.Empty;
     /// <summary>
     /// О пользователе
     /// </summary>
@@ -43,4 +47,5 @@ public class ApiAddUserViewModel
     /// Password
     /// </summary>
     public string Password { get; set; } = string.Empty;
+    
 }

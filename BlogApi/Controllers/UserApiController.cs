@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BlogBLL.UnitOfWork;
 using BlogBLL.ViewModels.User;
 using BlogDAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -68,10 +67,89 @@ public class UserApiController : ControllerBase
 
     #region AddUser
 
+    /// <summary>
+    /// Добавление пользователя
+    /// </summary>
+    /// <param name="userApi">Модель User</param>
+    /// <returns></returns>
     [HttpPost]
     [Route("/AddUser")]
-    public IActionResult AddUser(User user)
+    public async Task<IActionResult> AddUser(ApiAddUserViewModel userApi)
     {
+        if (!ModelState.IsValid) return StatusCode(400);
+        var userFind = await _userManager.FindByEmailAsync(userApi.Email);
+        if (userFind != default) return StatusCode(500);
+        var user = new User
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = userApi.Email,
+            About = userApi.About,
+            FirstName = userApi.FirstName,
+            LastName = userApi.LastName,
+            MiddleName = userApi.MiddleName,
+            BirthDate = userApi.BirthDate,
+            UserName = userApi.UserName,
+            PhoneNumber = userApi.PhoneNumber
+        };
+        var result = await _userManager.CreateAsync(user, userApi.Password);
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+
+        return StatusCode(500);
+    }
+
+    #endregion
+
+    #region UpdateUser
+
+    /// <summary>
+    /// Обновление данных пользователя
+    /// </summary>
+    /// <param name="model">ApiUpdateUserViewModel</param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("/UpdateUser")]
+    public async Task<IActionResult> UpdateUser(ApiUpdateUserViewModel model)
+    {
+        var user = await _userManager.FindByIdAsync(model.Id);
+        if (!string.IsNullOrEmpty(model.Password) && user != null)
+        {
+            var passwordValidator =
+                HttpContext.RequestServices.GetService(typeof(IPasswordValidator<User>)) as
+                    IPasswordValidator<User>;
+            var passwordHasher =
+                HttpContext.RequestServices.GetService(typeof(IPasswordHasher<User>)) as IPasswordHasher<User>;
+
+            await passwordValidator!.ValidateAsync(_userManager, user, model.Password);
+            user.PasswordHash = passwordHasher!.HashPassword(user, model.Password);
+            user.ConvertApi(model);
+        }
+        var result = await _userManager.UpdateAsync(user!);
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+        return StatusCode(500);
+    }
+
+    #endregion
+
+    #region DeleteUser
+
+    /// <summary>
+    /// Удаление пользователя
+    /// </summary>
+    /// <param name="id">ID пользователя</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("/DeleteUser/{id}")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == default) return StatusCode(500);
+        await _userManager.DeleteAsync(user);
         return Ok();
     }
 

@@ -2,6 +2,7 @@
 using BlogBLL.ViewModels.Account;
 using BlogBLL.ViewModels.Comment;
 using BlogBLL.ViewModels.Post;
+using BlogBLL.ViewModels.Role;
 using BlogBLL.ViewModels.Tag;
 using BlogBLL.ViewModels.User;
 using BlogDAL.Models;
@@ -112,6 +113,13 @@ public class MappingProfile : Profile
         #region MappingUserApi
 
         CreateMap<User, ApiUserViewModel>();
+
+        #endregion
+
+        #region MappingRolesApi
+
+        CreateMap<AppRole, ApiGetRolesByIdViewModel>();
+        CreateMap<ApiAddRoleViewModel, AppRole>();
 
         #endregion
 

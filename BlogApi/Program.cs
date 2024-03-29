@@ -74,7 +74,14 @@ namespace BlogApi
                 .AddCustomRepository<Tag, TagRepository>()
                 .AddCustomRepository<Remark, RemarkRepository>()
                 .AddCustomRepository<PostTag, PostTagRepository>()
-                .AddIdentity<User, AppRole>()
+                .AddIdentity<User, AppRole>(opts =>
+                {
+                    opts.Password.RequiredLength = 5;
+                    opts.Password.RequireNonAlphanumeric = false;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequireDigit = false;
+                })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -98,7 +105,7 @@ namespace BlogApi
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HomeApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogApi v1"));
             }
 
             app.UseHttpsRedirection();
