@@ -47,5 +47,9 @@ public class ApiUpdateUserViewModel
     /// Password
     /// </summary>
     public string Password { get; set; } = string.Empty;
+    /// <summary>
+    /// Roles
+    /// </summary>
+    public IList<string>? UserRole { get; set; }
     
 }

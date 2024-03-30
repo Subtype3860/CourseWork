@@ -128,6 +128,34 @@ public class PostApiController : ControllerBase
         var repository = _db.GetRepository<Post>() as PostRepository;
         var model = repository!.GetPostById(id);
         repository.PostRemove(model);
+        var repoPostTag = _db.GetRepository<PostTag>() as PostTagRepository;
+        var postTag = repoPostTag!.GetPostTagByPostId(id);
+        foreach (var tag in postTag)
+        {
+            repoPostTag.DeletePostTag(tag);
+        }
+        return Ok();
+    }
+
+    #endregion
+
+    #region AddPostTeg
+
+    /// <summary>
+    /// Статья - Таг
+    /// </summary>
+    /// <param name="postId">ID Post</param>
+    /// <param name="idTags">List Id Tags</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("/AddPostTeg")]
+    public IActionResult AddPostTeg(string postId, List<string> idTags)
+    {
+        var repository = _db.GetRepository<PostTag>() as PostTagRepository;
+        foreach (var tag in idTags)
+        {
+            repository!.AddPostTag(new PostTag { PostId = postId, TagId = tag });
+        }
         return Ok();
     }
 

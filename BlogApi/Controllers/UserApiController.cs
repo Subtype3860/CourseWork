@@ -127,6 +127,17 @@ public class UserApiController : ControllerBase
             user.ConvertApi(model);
         }
         var result = await _userManager.UpdateAsync(user!);
+        // получем список ролей пользователя
+        if (user != null)
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
+            // получаем список ролей, которые были добавлены
+            var addedRoles = model.UserRole!.Except(userRoles);
+            // получаем роли, которые были удалены
+            var removedRoles = userRoles.Except(model.UserRole!);
+            await _userManager.AddToRolesAsync(user, addedRoles);
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+        }
         if (result.Succeeded)
         {
             return Ok();

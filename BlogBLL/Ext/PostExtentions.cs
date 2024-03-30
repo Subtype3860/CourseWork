@@ -71,13 +71,25 @@ public class PostExtentions
         var getAllPostWebApi = new List<GetAllPostWebApi>();
         foreach (var post in model)
         {
+            var tags = post.PostTags!.Select(s => s.Tag).ToList();
+            var modelTag = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                modelTag.Add(new Tag
+                {
+                    Id = tag!.Id,
+                    Stick = tag.Stick
+                });
+            }
+            
             getAllPostWebApi.Add(new GetAllPostWebApi
             {
                 Id = post.Id,
                 Heading = post.Heading,
                 Body = post.Body,
                 DatePublic = post.DatePublic,
-                UserId = post.UserId
+                UserId = post.UserId,
+                Tags = modelTag
             });
         }
 

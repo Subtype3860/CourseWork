@@ -24,4 +24,5 @@ public class GetAllPostWebApi
     /// Заголовок статьи
     /// </summary>
     public string? Heading { get; set; } = string.Empty;
+    public List<BlogDAL.Models.Tag>? Tags { get; set; }
 }

@@ -88,4 +88,32 @@ public class RolesApiController : ControllerBase
     }
 
     #endregion
+
+    #region DeleteRoles
+
+    /// <summary>
+    /// Удаление роли
+    /// </summary>
+    /// <param name="id">ID Roles</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("/DeleteRoles/{id}")]
+    public async Task<StatusCodeResult> DeleteRoles(string id)
+    {
+        var model = await _roleManager.FindByIdAsync(id);
+        if (model != default)
+        {
+            var result = await _roleManager.DeleteAsync(model);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        return StatusCode(500);
+    }
+
+    #endregion
 }
