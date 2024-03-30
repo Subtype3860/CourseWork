@@ -40,7 +40,7 @@ namespace BlogApi
                         "v1", new OpenApiInfo
                         {
                             Version = "v1",
-                            Title = "Shop API",
+                            Title = "Blog API",
                             Description = "Пример ASP .NET Core Web API",
                             Contact = new OpenApiContact
                             {
